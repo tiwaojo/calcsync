@@ -1,0 +1,19 @@
+keytool -keystore C:\Users\Shenanigans\.android\debug.keystore -list -v                      
+Enter keystore password:  
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 1 entry
+
+Alias name: androiddebugkey
+Version: 1
+
+
+*******************************************
+*******************************************
+
+
+
+Warning:
+The JKS keystore uses a proprietary format. It is recommended to migrate to PKCS12 which is an industry standard format using "keytool -importkeystore -srckeystore C:\Users\Shenanigans\.android\debug.keystore -destkeystore C:\Users\
+Shenanigans\.android\debug.keystore -deststoretype pkcs12".
