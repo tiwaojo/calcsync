@@ -6,8 +6,7 @@ import 'firebase_options.dart';
 Future<void> main() async {
   runApp(const MyApp());
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+      options: DefaultFirebaseOptions.currentPlatform, name: "Calsync");
 }
 
 class MyApp extends StatelessWidget {

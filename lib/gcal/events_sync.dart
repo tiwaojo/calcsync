@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import "package:googleapis_auth/auth_io.dart";
 import 'package:googleapis/calendar/v3.dart';
@@ -20,15 +22,15 @@ class _EventsSyncState extends State<EventsSync> {
 
   (
 
-  Platform.isAndroid
+  Platform
+
+      .
 
   ) {
   _credentials = new ClientId(
-  "YOUR_CLIENT_ID_FOR_ANDROID_APP_RETRIEVED_FROM_Google_Console_Project_EARLIER",
+  "466724563377-lbfuln359gn1fkcnm41vk92fiqmvt825.apps.googleusercontent.com",
   "");
-  } else
-
-  if
+  } elseif
 
   (
 
