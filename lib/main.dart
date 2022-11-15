@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform, name: "Calsync");
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Calsync',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const CalSyncHomePage(title: 'Flutter Demo Home Page'),
+      home: const CalSyncHomePage(title: 'Calsync'),
     );
   }
 }
@@ -66,6 +67,8 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
     });
   }
 
+  void authClient() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,6 +86,7 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
+            ElevatedButton(onPressed: authClient, child: Text("Sign In"))
           ],
         ),
       ),

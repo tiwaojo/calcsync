@@ -34,6 +34,8 @@ dependencies:
   googleapis: ^9.2.0
   google_sign_in: ^5.4.2
   http: ^0.13.5
+  syncfusion_flutter_calendar: ^18.3.40
+  intl: ^0.16.0
 
 
   # The following adds the Cupertino Icons font to your application.
