@@ -1,4 +1,3 @@
-import 'dart:html';
 
 import 'package:flutter/material.dart';
 import "package:googleapis_auth/auth_io.dart";
@@ -17,30 +16,6 @@ class _EventsSyncState extends State<EventsSync> {
   ]; // We have the read & write permission
 
   var _credentials;
-
-  if
-
-  (
-
-  Platform
-
-      .
-
-  ) {
-  _credentials = new ClientId(
-  "466724563377-lbfuln359gn1fkcnm41vk92fiqmvt825.apps.googleusercontent.com",
-  "");
-  } elseif
-
-  (
-
-  Platform.isIOS
-
-  ) {
-  _credentials = new ClientId(
-  "YOUR_CLIENT_ID_FOR_IOS_APP_RETRIEVED_FROM_Google_Console_Project_EARLIER",
-  "");
-  }
 
   void getEvents() {
     setState(() {
