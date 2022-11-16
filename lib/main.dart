@@ -1,3 +1,4 @@
+import 'package:calsync/auth/calsync_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -67,28 +68,15 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
     });
   }
 
-  void authClient() {}
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // drawer: const Drawer(),
       appBar: AppBar(
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            ElevatedButton(onPressed: authClient, child: Text("Sign In"))
-          ],
-        ),
+        child: const CalsyncAuth(),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
