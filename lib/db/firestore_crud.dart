@@ -32,10 +32,10 @@ class FirestoreCrud {
     return response;
   }
 
-  static Stream<QuerySnapshot> readEvents() {
+  static Stream<QuerySnapshot> readEvents(String email) {
     CollectionReference notesItemCollection = _collection;
 
-    return notesItemCollection.snapshots();
+    return notesItemCollection.where('email', isEqualTo: email).snapshots();
   }
 
   static Future<Response> updateEvent({
