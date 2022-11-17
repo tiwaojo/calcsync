@@ -6,19 +6,23 @@ final CollectionReference _collection = _firestore.collection('Event');
 
 class FirestoreCrud {
   static Future<Response> addEvent({
-    required DateTime dateTime,
+    required DateTime to,
+    required DateTime from,
+    required bool isAllDay,
     required String name,
     required String description,
-    required String location,
+    required String email,
   }) async {
     Response response = Response();
     DocumentReference documentReferencer = _collection.doc();
 
     Map<String, dynamic> data = <String, dynamic>{
-      "date_time": dateTime,
+      "to": to,
+      "from": from,
+      "isAllDay": isAllDay,
       "name": name,
       "description": description,
-      "location": location
+      "email": email
     };
 
     var result = await documentReferencer.set(data).whenComplete(() {
@@ -40,19 +44,23 @@ class FirestoreCrud {
 
   static Future<Response> updateEvent({
     required String id,
-    required DateTime dateTime,
+    required DateTime to,
+    required DateTime from,
+    required bool isAllDay,
     required String name,
     required String description,
-    required String location,
+    required String email,
   }) async {
     Response response = Response();
     DocumentReference documentReferencer = _collection.doc(id);
 
     Map<String, dynamic> data = <String, dynamic>{
-      "date_time": dateTime,
+      "to": to,
+      "from": from,
+      "isAllDay": isAllDay,
       "name": name,
       "description": description,
-      "location": location
+      "email": email
     };
 
     await documentReferencer.update(data).whenComplete(() {
