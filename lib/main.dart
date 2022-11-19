@@ -3,12 +3,15 @@ import 'package:calsync/views/day_page.dart';
 import 'package:calsync/views/month_page.dart';
 import 'package:calsync/views/schedule_page.dart';
 import 'package:calsync/views/settings_page.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 
-import 'auth/calsync_auth.dart';
 import 'firebase_options.dart';
+
+GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
+int currentIndex = 0;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,15 +41,15 @@ class MyApp extends StatelessWidget {
         }
 
         switch (path[1]) {
-          case 'schedule':
-            return MaterialPageRoute(
-                builder: (BuildContext context) => SchedulePage());
-          case 'day':
-            return MaterialPageRoute(
-                builder: (BuildContext context) => DayPage());
-          case 'month':
-            return MaterialPageRoute(
-                builder: (BuildContext context) => MonthPage());
+          // case 'schedule':
+          //   return MaterialPageRoute(
+          //       builder: (BuildContext context) => SchedulePage());
+          // case 'day':
+          //   return MaterialPageRoute(
+          //       builder: (BuildContext context) => DayPage());
+          // case 'month':
+          //   return MaterialPageRoute(
+          //       builder: (BuildContext context) => MonthPage());
           case 'settings':
             return MaterialPageRoute(
                 builder: (BuildContext context) => SettingsPage());
@@ -111,53 +114,50 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
-        child: ListView(children: [
-          DrawerHeader(
-            child: ListTile(
-              title: Text("Drawer"),
-              leading: Icon(Ionicons.cafe_outline),
-              onTap: () {
-                setState(() {
-                  Navigator.popAndPushNamed(context, '/schedule');
-                  // Navigator.pushNamed(context, '/schedule');
-                });
-              },
-            ),
+      bottomNavigationBar: CurvedNavigationBar(
+        index: currentIndex,
+        key: _bottomNavigationKey,
+        items: [
+          CurvedNavButton(
+            icon: Icon(Icons.calendar_view_day_rounded),
+            routeIndex: 0,
           ),
-          TextButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    // builder methods always take context!
-                    builder: (context) {
-                      return const Text("dog");
-                    },
-                  ),
-                );
-              },
-              child: const Text("data")),
-        ]),
+          CurvedNavButton(
+            icon: Icon(Ionicons.calendar_number_sharp),
+            routeIndex: 1,
+          ),
+          CurvedNavButton(
+            icon: Icon(Ionicons.calendar_clear_outline),
+            routeIndex: 2,
+          ),
+          CurvedNavButton(
+            icon: Icon(Ionicons.calendar_clear_outline),
+            routeIndex: 3,
+          ),
+        ],
+        backgroundColor: Colors.amberAccent.shade700,
+        animationDuration: const Duration(
+          milliseconds: 200,
+        ),
+        animationCurve: Curves.easeInOut,
+        onTap: (index) {
+          setState(() {
+            currentIndex = index;
+          });
+        },
       ),
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Column(
-        children: [
-          const Center(
-            child: CalsyncAuth(),
-          ),
-          AboutListTile(
-            icon: const Icon(Icons.info),
-            applicationIcon: const FlutterLogo(),
-            applicationName: 'Show About Examplee',
-            applicationVersion: 'August 2019',
-            applicationLegalese: '\u{a9} 2014 The Flutter Authors',
-            aboutBoxChildren: aboutBoxChildren,
-          ),
-        ],
-      ),
+      body: [
+        SchedulePage(),
+        DayPage(),
+        MonthPage(),
+        SettingsPage()
+      ][currentIndex],
       floatingActionButton: FloatingActionButton(
+        enableFeedback: true,
         onPressed: () {
           setState(() {
             showModalBottomSheet(
@@ -180,6 +180,45 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class CurvedNavButton extends StatefulWidget {
+  const CurvedNavButton({
+    Key? key,
+    // this.selectedIcon,
+    required this.icon,
+    required this.routeIndex,
+  }) : super(key: key);
+
+  // final Icon selectedIcon;
+  final Icon icon;
+  final int routeIndex;
+
+  @override
+  State<CurvedNavButton> createState() => _CurvedNavButtonState();
+}
+
+class _CurvedNavButtonState extends State<CurvedNavButton> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          // selectedIcon: selectedIcon ?? icon,
+          iconSize: 20,
+          onPressed: () {
+            // setState(() {
+            final CurvedNavigationBarState? navBarState =
+                _bottomNavigationKey.currentState;
+            navBarState?.setPage(widget.routeIndex);
+          },
+          icon: widget.icon,
+        ),
+        Text("asdf")
+      ],
     );
   }
 }

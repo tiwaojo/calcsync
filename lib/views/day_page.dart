@@ -11,7 +11,7 @@ class _DayPageState extends State<DayPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Center(child: Text("Schedule Page")),
+      child: Center(child: Text("Day Page")),
     );
   }
 }
