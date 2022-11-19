@@ -3,15 +3,10 @@ import 'package:calsync/views/day_page.dart';
 import 'package:calsync/views/month_page.dart';
 import 'package:calsync/views/schedule_page.dart';
 import 'package:calsync/views/settings_page.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:ionicons/ionicons.dart';
 
 import 'firebase_options.dart';
-
-GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
-int currentIndex = 0;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -111,51 +106,61 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
   //   FlutterNativeSplash.remove();
   // }
 
+  final routes = [
+    SchedulePage(),
+    DayPage(),
+    MonthPage(),
+    SettingsPage(),
+  ];
+
+  int currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: CurvedNavigationBar(
-        index: currentIndex,
-        key: _bottomNavigationKey,
-        items: [
-          CurvedNavButton(
-            icon: Icon(Icons.calendar_view_day_rounded),
-            routeIndex: 0,
-          ),
-          CurvedNavButton(
-            icon: Icon(Ionicons.calendar_number_sharp),
-            routeIndex: 1,
-          ),
-          CurvedNavButton(
-            icon: Icon(Ionicons.calendar_clear_outline),
-            routeIndex: 2,
-          ),
-          CurvedNavButton(
-            icon: Icon(Ionicons.calendar_clear_outline),
-            routeIndex: 3,
-          ),
-        ],
-        backgroundColor: Colors.amberAccent.shade700,
-        animationDuration: const Duration(
-          milliseconds: 200,
-        ),
-        animationCurve: Curves.easeInOut,
-        onTap: (index) {
-          setState(() {
-            currentIndex = index;
-          });
-        },
-      ),
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: [
-        SchedulePage(),
-        DayPage(),
-        MonthPage(),
-        SettingsPage()
-      ][currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: currentIndex,
+        enableFeedback: true,
+        showSelectedLabels: true,
+        onTap: (index) {
+          setState(() {
+            currentIndex = index;
+            print(currentIndex);
+          });
+        },
+        // type: BottomNavigationBarType.shifting,
+        items: const [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.schedule_rounded),
+              backgroundColor: Colors.indigo,
+              tooltip: 'Schedule',
+              label: 'Schedule'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_view_day_rounded),
+            backgroundColor: Colors.indigo,
+            tooltip: 'Day',
+            label: 'Day',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_month_rounded),
+            backgroundColor: Colors.indigo,
+            tooltip: 'Month',
+            label: 'Month',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings_rounded),
+            backgroundColor: Colors.indigo,
+            tooltip: 'Settings',
+            label: 'Settings',
+          ),
+        ],
+      ),
+
+      body: routes[currentIndex],
       floatingActionButton: FloatingActionButton(
         enableFeedback: true,
         onPressed: () {
@@ -180,45 +185,6 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
-}
-
-class CurvedNavButton extends StatefulWidget {
-  const CurvedNavButton({
-    Key? key,
-    // this.selectedIcon,
-    required this.icon,
-    required this.routeIndex,
-  }) : super(key: key);
-
-  // final Icon selectedIcon;
-  final Icon icon;
-  final int routeIndex;
-
-  @override
-  State<CurvedNavButton> createState() => _CurvedNavButtonState();
-}
-
-class _CurvedNavButtonState extends State<CurvedNavButton> {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        IconButton(
-          // selectedIcon: selectedIcon ?? icon,
-          iconSize: 20,
-          onPressed: () {
-            // setState(() {
-            final CurvedNavigationBarState? navBarState =
-                _bottomNavigationKey.currentState;
-            navBarState?.setPage(widget.routeIndex);
-          },
-          icon: widget.icon,
-        ),
-        Text("asdf")
-      ],
     );
   }
 }
