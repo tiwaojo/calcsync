@@ -1,12 +1,13 @@
 import 'package:calsync/themes/themes.dart';
-import 'package:calsync/views/components/navbar.dart';
 import 'package:calsync/views/day_page.dart';
 import 'package:calsync/views/month_page.dart';
 import 'package:calsync/views/schedule_page.dart';
 import 'package:calsync/views/settings_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 
+import 'auth/calsync_auth.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -109,86 +110,53 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    int _currentIndex = 0;
     return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        enableFeedback: true,
-        showSelectedLabels: true,
-        onTap: (index) {
-          setState(() {
-            currentIndex = index;
-          });
-        },
-        type: BottomNavigationBarType.shifting,
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.schedule_rounded),
-              backgroundColor: Colors.indigo,
-              tooltip: 'Schedule',
-              label: 'Schedule'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_view_day_rounded),
-            backgroundColor: Colors.indigo,
-            tooltip: 'Day',
-            label: 'Day',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month_rounded),
-            backgroundColor: Colors.indigo,
-            tooltip: 'Month',
-            label: 'Month',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings_rounded),
-            backgroundColor: Colors.indigo,
-            tooltip: 'Settings',
-            label: 'Settings',
-          ),
-        ],
-      ),
       drawer: Drawer(
-        child: SingleChildScrollView(
-          child: ListView(children: [
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      // builder methods always take context!
-                      builder: (context) {
-                        return const Text("dog");
-                      },
-                    ),
-                  );
-                },
-                child: const Text("data")),
-          ]),
-        ),
+        child: ListView(children: [
+          DrawerHeader(
+            child: ListTile(
+              title: Text("Drawer"),
+              leading: Icon(Ionicons.cafe_outline),
+              onTap: () {
+                setState(() {
+                  Navigator.popAndPushNamed(context, '/schedule');
+                  // Navigator.pushNamed(context, '/schedule');
+                });
+              },
+            ),
+          ),
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    // builder methods always take context!
+                    builder: (context) {
+                      return const Text("dog");
+                    },
+                  ),
+                );
+              },
+              child: const Text("data")),
+        ]),
       ),
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: [
-        SchedulePage(),
-        DayPage(),
-        MonthPage(),
-        SettingsPage()
-      ][_currentIndex],
-      // Column(
-      //   children: [
-      //     const Center(
-      //       child: CalsyncAuth(),
-      //     ),
-      //     AboutListTile(
-      //       icon: const Icon(Icons.info),
-      //       applicationIcon: const FlutterLogo(),
-      //       applicationName: 'Show About Examplee',
-      //       applicationVersion: 'August 2019',
-      //       applicationLegalese: '\u{a9} 2014 The Flutter Authors',
-      //       aboutBoxChildren: aboutBoxChildren,
-      //     ),
-      //   ],
-      // ),
+      body: Column(
+        children: [
+          const Center(
+            child: CalsyncAuth(),
+          ),
+          AboutListTile(
+            icon: const Icon(Icons.info),
+            applicationIcon: const FlutterLogo(),
+            applicationName: 'Show About Examplee',
+            applicationVersion: 'August 2019',
+            applicationLegalese: '\u{a9} 2014 The Flutter Authors',
+            aboutBoxChildren: aboutBoxChildren,
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           setState(() {

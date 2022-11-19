@@ -96,6 +96,6 @@ class NavButton extends StatefulWidget {
 class _NavButtonState extends State<NavButton> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return ElevatedButton(onPressed: () {}, child: Text("text"));
   }
 }
