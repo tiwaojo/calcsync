@@ -1,4 +1,9 @@
-import 'package:calsync/auth/calsync_auth.dart';
+import 'package:calsync/themes/themes.dart';
+import 'package:calsync/views/components/navbar.dart';
+import 'package:calsync/views/day_page.dart';
+import 'package:calsync/views/month_page.dart';
+import 'package:calsync/views/schedule_page.dart';
+import 'package:calsync/views/settings_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -19,34 +24,41 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Calsync',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
+      theme: CalsyncThemes.light,
+      darkTheme: CalsyncThemes.dark,
       home: const CalSyncHomePage(title: 'Calsync'),
+      onGenerateRoute: (RouteSettings routeParam) {
+        // https://youtu.be/-XMexZCMCzU
+        // Auto generate routes by using patterns
+        final List<String> path = routeParam.name!.split('/');
+        if (path[0] != '') {
+          print("Path: $path");
+          return null;
+        }
+
+        switch (path[1]) {
+          case 'schedule':
+            return MaterialPageRoute(
+                builder: (BuildContext context) => SchedulePage());
+          case 'day':
+            return MaterialPageRoute(
+                builder: (BuildContext context) => DayPage());
+          case 'month':
+            return MaterialPageRoute(
+                builder: (BuildContext context) => MonthPage());
+          case 'settings':
+            return MaterialPageRoute(
+                builder: (BuildContext context) => SettingsPage());
+          default:
+            return null;
+        }
+      },
     );
   }
 }
 
 class CalSyncHomePage extends StatefulWidget {
   const CalSyncHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
@@ -55,31 +67,148 @@ class CalSyncHomePage extends StatefulWidget {
 }
 
 class _CalSyncHomePageState extends State<CalSyncHomePage> {
-  int _counter = 0;
+  final List<Widget> aboutBoxChildren = <Widget>[
+    const SizedBox(height: 24),
+    RichText(
+      text: const TextSpan(
+        children: <TextSpan>[
+          TextSpan(
+              // style: textStyle,
+              text: "Flutter is Google's UI toolkit for building beautiful, "
+                  'natively compiled applications for mobile, web, and desktop '
+                  'from a single codebase. Learn more about Flutter at '),
+          TextSpan(
+              // style: textStyle.copyWith(color: theme.colorScheme.primary),
+              text: 'https://flutter.dev'),
+          // TextSpan(style: textStyle, text: '.'),
+        ],
+      ),
+    ),
+  ];
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   initialization();
+  // }
+  //
+  // void initialization() async {
+  //   // This is where you can initialize the resources needed by your app while
+  //   // the splash screen is displayed.  Remove the following example because
+  //   // delaying the user experience is a bad design practice!
+  //   // ignore_for_file: avoid_print
+  //   print('ready in 3...');
+  //   await Future.delayed(const Duration(seconds: 1));
+  //   print('ready in 2...');
+  //   await Future.delayed(const Duration(seconds: 1));
+  //   print('ready in 1...');
+  //   await Future.delayed(const Duration(seconds: 1));
+  //   print('go!');
+  //   FlutterNativeSplash.remove();
+  // }
 
   @override
   Widget build(BuildContext context) {
+    int _currentIndex = 0;
     return Scaffold(
-      // drawer: const Drawer(),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        enableFeedback: true,
+        showSelectedLabels: true,
+        onTap: (index) {
+          setState(() {
+            currentIndex = index;
+          });
+        },
+        type: BottomNavigationBarType.shifting,
+        items: const [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.schedule_rounded),
+              backgroundColor: Colors.indigo,
+              tooltip: 'Schedule',
+              label: 'Schedule'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_view_day_rounded),
+            backgroundColor: Colors.indigo,
+            tooltip: 'Day',
+            label: 'Day',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_month_rounded),
+            backgroundColor: Colors.indigo,
+            tooltip: 'Month',
+            label: 'Month',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings_rounded),
+            backgroundColor: Colors.indigo,
+            tooltip: 'Settings',
+            label: 'Settings',
+          ),
+        ],
+      ),
+      drawer: Drawer(
+        child: SingleChildScrollView(
+          child: ListView(children: [
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      // builder methods always take context!
+                      builder: (context) {
+                        return const Text("dog");
+                      },
+                    ),
+                  );
+                },
+                child: const Text("data")),
+          ]),
+        ),
+      ),
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: const CalsyncAuth(),
-      ),
+      body: [
+        SchedulePage(),
+        DayPage(),
+        MonthPage(),
+        SettingsPage()
+      ][_currentIndex],
+      // Column(
+      //   children: [
+      //     const Center(
+      //       child: CalsyncAuth(),
+      //     ),
+      //     AboutListTile(
+      //       icon: const Icon(Icons.info),
+      //       applicationIcon: const FlutterLogo(),
+      //       applicationName: 'Show About Examplee',
+      //       applicationVersion: 'August 2019',
+      //       applicationLegalese: '\u{a9} 2014 The Flutter Authors',
+      //       aboutBoxChildren: aboutBoxChildren,
+      //     ),
+      //   ],
+      // ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () {
+          setState(() {
+            showModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return const SingleChildScrollView(
+                    // child: AddEvent(),
+                    child: Text("Hola"),
+                  );
+                },
+                backgroundColor: Theme.of(context).disabledColor,
+                enableDrag: true,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(25.0),
+                  ),
+                ));
+          });
+        },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.

@@ -2,53 +2,39 @@ import 'dart:io';
 
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 
 /// Provides the `GoogleSignIn` class
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/calendar/v3.dart';
 import 'package:googleapis_auth/googleapis_auth.dart' as auth show AuthClient;
 
-class CalsyncAuth extends StatefulWidget {
-  const CalsyncAuth({Key? key}) : super(key: key);
-
-  @override
-  State<CalsyncAuth> createState() => _CalsyncAuthState();
-}
-
-class _CalsyncAuthState extends State<CalsyncAuth> {
-  // FirebaseAuth auth = FirebaseAuth.instance;
-
+class CalsyncGoogleOAuth {
   GoogleSignInAccount? _currentUser;
   String calList = "Empty Calendar List";
-  String userDetails = "user";
-  late final GoogleSignIn _googleSignIn; // initialize at runtime
+  static GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  // String getClientId() {
-  //   final response = rootBundle.loadString('assets/client_secret.json')
-  //       as String; // load client_secret.json
-  //   Map<String, dynamic> clientId =
-  //       jsonDecode(response); // Get the client id from json object
-  //   print(clientId);
-  //   return clientId["client_id"].toString();
+  // CalsyncGoogleOAuth() {
+  //   signIn();
   // }
 
-  @override
-  void initState() {
-    super.initState();
+  GoogleSignInAccount? get currentUser => _currentUser;
 
+  Future signIn() async {
     _googleSignIn = GoogleSignIn(
       scopes: <String>[CalendarApi.calendarScope],
       serverClientId: Platform.isAndroid
           ? "466724563377-lbfuln359gn1fkcnm41vk92fiqmvt825.apps.googleusercontent.com"
           : "466724563377-na4725bb0fmgl93mhrqj60brcbpehqkg.apps.googleusercontent.com", // getClientId(),
     );
+    // return _currentUser;
+  }
 
+  Future<void> changeUser() async {
     _googleSignIn.onCurrentUserChanged
         .listen((GoogleSignInAccount? account) async {
-      setState(() {
-        _currentUser = account;
-      });
+      // setState(() {
+      _currentUser = account;
+      // });
       if (_currentUser != null) {
         if (kDebugMode) {
           print("Not signed in");
@@ -71,28 +57,24 @@ class _CalsyncAuthState extends State<CalsyncAuth> {
         .items
         ?.first
         .description as String;
-    setState(() {
-      if (kDebugMode) {
-        // calList = calendarList as String;
-        print(calList);
-      }
-    });
+    // setState(() {
+    if (kDebugMode) {
+      // calList = calendarList as String;
+      print(calList);
+    }
+    // });
   }
 
-  void listCalendars() {
-    getCalendars();
+  Future<void> _handleSignIn() async {
+    try {
+      await _googleSignIn.signIn();
+      // setState(() {
+      _currentUser = _googleSignIn.currentUser?.email as GoogleSignInAccount?;
+      // });
+    } catch (error) {
+      print(error); // ignore: avoid_print
+    }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // ElevatedButton(
-        //     onPressed: _handleSignIn, child: Text("Sign in to google")),
-        ElevatedButton(onPressed: listCalendars, child: Text("List calendars")),
-        Text(calList),
-        Text(userDetails)
-      ],
-    );
-  }
+  Future<void> _handleSignOut() => _googleSignIn.disconnect();
 }
