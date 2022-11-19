@@ -122,38 +122,40 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        enableFeedback: true,
-        showSelectedLabels: true,
-        onTap: (index) {
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: currentIndex,
+        animationDuration: Duration(milliseconds: 200),
+        height: 60,
+        // enableFeedback: true,
+        // showSelectedLabels: true,
+        onDestinationSelected: (index) {
           setState(() {
             currentIndex = index;
             print(currentIndex);
           });
         },
         // type: BottomNavigationBarType.shifting,
-        items: const [
-          BottomNavigationBarItem(
+        destinations: const [
+          NavigationDestination(
               icon: Icon(Icons.schedule_rounded),
-              backgroundColor: Colors.indigo,
+              // backgroundColor: Colors.indigo,
               tooltip: 'Schedule',
               label: 'Schedule'),
-          BottomNavigationBarItem(
+          NavigationDestination(
             icon: Icon(Icons.calendar_view_day_rounded),
-            backgroundColor: Colors.indigo,
+            // backgroundColor: Colors.indigo,
             tooltip: 'Day',
             label: 'Day',
           ),
-          BottomNavigationBarItem(
+          NavigationDestination(
             icon: Icon(Icons.calendar_month_rounded),
-            backgroundColor: Colors.indigo,
+            // backgroundColor: Colors.indigo,
             tooltip: 'Month',
             label: 'Month',
           ),
-          BottomNavigationBarItem(
+          NavigationDestination(
             icon: Icon(Icons.settings_rounded),
-            backgroundColor: Colors.indigo,
+            // backgroundColor: Colors.indigo,
             tooltip: 'Settings',
             label: 'Settings',
           ),
