@@ -1,8 +1,6 @@
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:ionicons/ionicons.dart';
 
-GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
 int currentIndex = 0;
 
 class NavBar extends StatefulWidget {
@@ -17,77 +15,51 @@ class _NavBarState extends State<NavBar> {
 
   @override
   Widget build(BuildContext context) {
-    return CurvedNavigationBar(
-      index: currentIndex,
-      key: _bottomNavigationKey,
-      letIndexChange: (index) => true,
-      items: [
-        CurvedNavButton(
-          icon: Icon(Ionicons.cafe_outline),
-          routeIndex: 0,
-        ),
-        CurvedNavButton(
-          icon: Icon(Ionicons.calendar_number_sharp),
-          routeIndex: 1,
-        ),
-        CurvedNavButton(
-          icon: Icon(Ionicons.calendar_clear_outline),
-          routeIndex: 2,
-        ),
-      ],
-      backgroundColor: Colors.amberAccent.shade700,
-      animationDuration: const Duration(
-        milliseconds: 200,
+    return BottomAppBar(
+      notchMargin: 5,
+      child: Row(
+        //children inside bottom appbar
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: const <Widget>[
+          NavButton(
+            icon: Icons.schedule_rounded,
+            routeIndex: 0,
+            btnLabel: "Schedule",
+          ),
+          NavButton(
+            icon: Icons.calendar_view_day_rounded,
+            routeIndex: 1,
+            btnLabel: "Day",
+          ),
+          NavButton(
+            icon: Icons.calendar_month_rounded,
+            routeIndex: 2,
+            btnLabel: "Month",
+          ),
+          NavButton(
+            icon: Icons.settings_rounded,
+            routeIndex: 3,
+            btnLabel: "Settings",
+          ),
+        ],
       ),
-      animationCurve: Curves.easeInOut,
-      onTap: (index) {
-        setState(() {
-          currentIndex = index;
-        });
-        // final _pageController = PageController();
-        // _pageController.jumpToPage(currentIndex);
-      },
-    );
-  }
-}
-
-class CurvedNavButton extends StatefulWidget {
-  const CurvedNavButton({
-    Key? key,
-    // this.selectedIcon,
-    required this.icon,
-    required this.routeIndex,
-  }) : super(key: key);
-
-  // final Icon selectedIcon;
-  final Icon icon;
-  final int routeIndex;
-
-  @override
-  State<CurvedNavButton> createState() => _CurvedNavButtonState();
-}
-
-class _CurvedNavButtonState extends State<CurvedNavButton> {
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      // selectedIcon: selectedIcon ?? icon,
-      onPressed: () {
-        // setState(() {
-        final CurvedNavigationBarState? navBarState =
-            _bottomNavigationKey.currentState;
-        navBarState?.setPage(widget.routeIndex);
-
-        // });
-        // Navigator.pushNamed(context, '/schedule');
-      },
-      icon: widget.icon,
     );
   }
 }
 
 class NavButton extends StatefulWidget {
-  const NavButton({Key? key}) : super(key: key);
+  const NavButton(
+      {Key? key,
+      required this.icon,
+      required this.routeIndex,
+      required this.btnLabel})
+      : super(key: key);
+
+// final Icon selectedIcon;
+  final IconData icon;
+  final int routeIndex;
+  final String btnLabel;
 
   @override
   State<NavButton> createState() => _NavButtonState();
@@ -96,6 +68,20 @@ class NavButton extends StatefulWidget {
 class _NavButtonState extends State<NavButton> {
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(onPressed: () {}, child: Text("text"));
+    return ElevatedButton.icon(
+      icon: Icon(
+        widget.icon,
+        color: Colors.white,
+      ),
+      onPressed: () {
+        setState(() {
+          currentIndex = widget.routeIndex;
+          if (kDebugMode) {
+            print("Route Index: $currentIndex");
+          }
+        });
+      },
+      label: Text(widget.btnLabel),
+    );
   }
 }

@@ -6,44 +6,54 @@ class CalsyncThemes {
     textTheme: CalsyncThemesText.calsyncTextThemeL,
     inputDecorationTheme: InputDecorationTheme(
       // fillColor: Color(0xff182231),
-      contentPadding: EdgeInsets.only(left: 10),
+      contentPadding: const EdgeInsets.only(left: 10),
       focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Color(0xFFFF0080)),
+          borderSide: const BorderSide(color: Color(0xFFFF0080)),
           borderRadius: BorderRadius.circular(10),
           gapPadding: 10),
       alignLabelWithHint: true,
     ),
-    timePickerTheme: TimePickerThemeData(
+    timePickerTheme: const TimePickerThemeData(
       backgroundColor: Color(0xFF1C4572),
       dialHandColor: Color(0xff398AE5),
       dialTextColor: Color(0xFFC8C8C8),
       hourMinuteTextColor: Color(0xFFC8C8C8),
       dayPeriodBorderSide: BorderSide.none,
     ),
-
-    accentColor: Color(0xFFFF0080),
+    // accentColor: const Color(0xFFFF0080),
     //FF3366),
-    backgroundColor: Color(0xFF202836),
-    scaffoldBackgroundColor: Color(0xFF398AE5),
-    primaryColor: Color(0xff398AE5),
-    primaryColorDark: Color(0xFF41424A),
-    primaryColorLight: Color(0xFF1C4572),
-    focusColor: Color(0xFFC8C8C8),
-    disabledColor: Color(0xFF3176c6), //233142
+    backgroundColor: const Color(0xFF202836),
+    scaffoldBackgroundColor: const Color(0xFF398AE5),
+    primaryColor: const Color(0xff398AE5),
+    primaryColorDark: const Color(0xFF41424A),
+    primaryColorLight: const Color(0xFF1C4572),
+    focusColor: const Color(0xFFC8C8C8),
+    disabledColor: const Color(0xFF3176c6),
+    //233142
+    bottomAppBarTheme: const BottomAppBarTheme(
+      elevation: 20.0,
+      color: Colors.brown,
+      shape: CircularNotchedRectangle(),
+    ),
+    progressIndicatorTheme: const ProgressIndicatorThemeData(
+        color: Colors.amber,
+        circularTrackColor: Colors.greenAccent,
+        linearMinHeight: 2.0,
+        refreshBackgroundColor: Colors.orange),
   );
 
   static ThemeData dark = ThemeData(
     textTheme: CalsyncThemesText.calsyncTextThemeD,
     inputDecorationTheme: InputDecorationTheme(
       // fillColor: Color(0xff182231),
-      contentPadding: EdgeInsets.only(left: 10),
+      contentPadding: const EdgeInsets.only(left: 10),
       focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.pink),
+          borderSide: const BorderSide(color: Colors.pink),
           borderRadius: BorderRadius.circular(10),
           gapPadding: 10),
       alignLabelWithHint: true,
     ),
-    timePickerTheme: TimePickerThemeData(
+    timePickerTheme: const TimePickerThemeData(
       backgroundColor: Color(0xff182231),
       dialHandColor: Color(0xff182231),
       dialTextColor: Color(0xFFC8C8C8),
@@ -56,16 +66,16 @@ class CalsyncThemes {
       ),
     ),
 
-    disabledColor: Color(0xFF233142),
+    disabledColor: const Color(0xFF233142),
     //3176c6
-    scaffoldBackgroundColor: Color(0xff182231),
-    primaryColor: Color(0xff182231),
-    primaryColorDark: Color(0xFF41424A),
-    primaryColorLight: Color(0xFF35E636E),
+    scaffoldBackgroundColor: const Color(0xff182231),
+    primaryColor: const Color(0xff182231),
+    primaryColorDark: const Color(0xFF41424A),
+    primaryColorLight: const Color(0xFF35E636E),
     //1C4572),
-    accentColor: Color(0xFFFF3366),
-    focusColor: Color(0xFFC8C8C8),
-    backgroundColor: Color(0xFF202836),
+    // accentColor: const Color(0xFFFF3366),
+    focusColor: const Color(0xFFC8C8C8),
+    backgroundColor: const Color(0xFF202836),
     primarySwatch: Colors.blue,
   );
 }

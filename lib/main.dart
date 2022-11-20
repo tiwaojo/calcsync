@@ -1,4 +1,5 @@
 import 'package:calsync/themes/themes.dart';
+import 'package:calsync/views/components/navbar.dart';
 import 'package:calsync/views/day_page.dart';
 import 'package:calsync/views/month_page.dart';
 import 'package:calsync/views/schedule_page.dart';
@@ -114,7 +115,6 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
   ];
 
   int currentIndex = 0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,47 +122,11 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: currentIndex,
-        animationDuration: Duration(milliseconds: 200),
-        height: 60,
-        // enableFeedback: true,
-        // showSelectedLabels: true,
-        onDestinationSelected: (index) {
-          setState(() {
-            currentIndex = index;
-            print(currentIndex);
-          });
-        },
-        // type: BottomNavigationBarType.shifting,
-        destinations: const [
-          NavigationDestination(
-              icon: Icon(Icons.schedule_rounded),
-              // backgroundColor: Colors.indigo,
-              tooltip: 'Schedule',
-              label: 'Schedule'),
-          NavigationDestination(
-            icon: Icon(Icons.calendar_view_day_rounded),
-            // backgroundColor: Colors.indigo,
-            tooltip: 'Day',
-            label: 'Day',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.calendar_month_rounded),
-            // backgroundColor: Colors.indigo,
-            tooltip: 'Month',
-            label: 'Month',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.settings_rounded),
-            // backgroundColor: Colors.indigo,
-            tooltip: 'Settings',
-            label: 'Settings',
-          ),
-        ],
-      ),
+      bottomNavigationBar: NavBar(),
 
       body: routes[currentIndex],
+      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         enableFeedback: true,
         onPressed: () {
