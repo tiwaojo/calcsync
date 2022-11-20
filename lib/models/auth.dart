@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-
 /// Provides the `GoogleSignIn` class
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/calendar/v3.dart';
@@ -35,7 +34,8 @@ class CalsyncGoogleOAuth {
     _getClientId().then((value) => print(value));
     _googleSignIn = GoogleSignIn(
       scopes: <String>[CalendarApi.calendarScope],
-      // clientId: ,
+      clientId:
+          "466724563377-lbfuln359gn1fkcnm41vk92fiqmvt825.apps.googleusercontent.com",
       serverClientId: Platform.isAndroid
           ? "466724563377-lbfuln359gn1fkcnm41vk92fiqmvt825.apps.googleusercontent.com"
           : "466724563377-na4725bb0fmgl93mhrqj60brcbpehqkg.apps.googleusercontent.com", // getClientId(),

@@ -68,20 +68,25 @@ class NavButton extends StatefulWidget {
 class _NavButtonState extends State<NavButton> {
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton.icon(
-      icon: Icon(
-        widget.icon,
-        color: Colors.white,
-      ),
-      onPressed: () {
-        setState(() {
-          currentIndex = widget.routeIndex;
-          if (kDebugMode) {
-            print("Route Index: $currentIndex");
-          }
-        });
-      },
-      label: Text(widget.btnLabel),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          icon: Icon(
+            widget.icon,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            setState(() {
+              currentIndex = widget.routeIndex;
+              if (kDebugMode) {
+                print("Route Index: $currentIndex");
+              }
+            });
+          },
+        ),
+        Text(widget.btnLabel),
+      ],
     );
   }
 }

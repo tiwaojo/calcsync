@@ -1,10 +1,10 @@
 import 'package:calsync/themes/themes.dart';
-import 'package:calsync/views/components/navbar.dart';
 import 'package:calsync/views/day_page.dart';
 import 'package:calsync/views/month_page.dart';
 import 'package:calsync/views/schedule_page.dart';
 import 'package:calsync/views/settings_page.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'firebase_options.dart';
@@ -15,6 +15,8 @@ Future<void> main() async {
       options: DefaultFirebaseOptions.currentPlatform, name: "Calsync");
   runApp(const MyApp());
 }
+
+int currentIndex = 0;
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -114,7 +116,6 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
     SettingsPage(),
   ];
 
-  int currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,8 +123,35 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      bottomNavigationBar: NavBar(),
-
+      bottomNavigationBar: BottomAppBar(
+        notchMargin: 5,
+        child: Row(
+          //children inside bottom appbar
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            NavItem(
+              icon: Icons.schedule_rounded,
+              routeIndex: 0,
+              btnLabel: "Schedule",
+            ),
+            NavItem(
+              icon: Icons.calendar_view_day_rounded,
+              routeIndex: 1,
+              btnLabel: "Day",
+            ),
+            NavItem(
+              icon: Icons.calendar_month_rounded,
+              routeIndex: 2,
+              btnLabel: "Month",
+            ),
+            NavItem(
+                icon: Icons.settings_rounded,
+                routeIndex: 3,
+                btnLabel: "Settings"),
+          ],
+        ),
+      ),
       body: routes[currentIndex],
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -151,6 +179,76 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+
+  Column NavItem({
+    required int routeIndex,
+    required String btnLabel,
+    required IconData icon,
+  }) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          icon: Icon(
+            icon,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            setState(() {
+              currentIndex = routeIndex;
+              if (kDebugMode) {
+                print("Route Index: $currentIndex");
+              }
+            });
+          },
+        ),
+        Text(btnLabel),
+      ],
+    );
+  }
+}
+
+class NavButton extends StatefulWidget {
+  const NavButton(
+      {Key? key,
+      required this.icon,
+      required this.routeIndex,
+      required this.btnLabel})
+      : super(key: key);
+
+// final Icon selectedIcon;
+  final IconData icon;
+  final int routeIndex;
+  final String btnLabel;
+
+  @override
+  State<NavButton> createState() => _NavButtonState();
+}
+
+class _NavButtonState extends State<NavButton> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          icon: Icon(
+            widget.icon,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            setState(() {
+              currentIndex = widget.routeIndex;
+              if (kDebugMode) {
+                print("Route Index: $currentIndex");
+              }
+            });
+          },
+        ),
+        Text(widget.btnLabel),
+      ],
     );
   }
 }
