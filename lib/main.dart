@@ -32,8 +32,8 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           title: 'Calsync',
           theme: notifier.darkTheme ? CalsyncThemes.dark : CalsyncThemes.light,
-          darkTheme: CalsyncThemes.dark,
-          themeMode: ThemeMode.system,
+          // darkTheme: CalsyncThemes.dark,
+          // themeMode: ThemeMode.system,
           home: const CalSyncHomePage(title: 'Calsync'),
           onGenerateRoute: (RouteSettings routeParam) {
             // https://youtu.be/-XMexZCMCzU

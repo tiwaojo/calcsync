@@ -95,14 +95,14 @@ class CalsyncThemeNotification extends ChangeNotifier {
 //     _prefs ??= (await SharedPreferences.getInstance());
 //   }
 
-  Future<void> _setThemeSharedPref() async {
+  Future<void> setThemeSharedPref() async {
     // final SharedPreferences prefs = await _prefs; //Initializes shared preferences in current scope for theme and awaits for the instance
     // final theme = prefs.setBool(_themeKey, _darkTheme);
     _prefs.then(
         (SharedPreferences prefs) => prefs.setBool(_themeKey, _darkTheme));
   }
 
-  Future<void> _getThemeSharedPref() async {
+  Future<void> getThemeSharedPref() async {
     // final SharedPreferences prefs = await _prefs;
     _prefs.then(
         (SharedPreferences prefs) => {_darkTheme = prefs.getBool(_themeKey)!});
@@ -110,37 +110,11 @@ class CalsyncThemeNotification extends ChangeNotifier {
     // return prefs.getBool(_themeKey) ?? false; // If theme key doesn't exist return false
   }
 
-  toggleTheme() {
-    _darkTheme = !_darkTheme;
-    _setThemeSharedPref();
+  toggleTheme(bool value) {
+    _darkTheme = value;
+    setThemeSharedPref();
     notifyListeners(); // Calls all listeners to update their state
   }
 
   bool get darkTheme => _darkTheme;
-
-//   ThemeNotifier() {
-//     _darkTheme = true;
-//     _loadFromPrefs();
-//   }
-
-//   toggleTheme() {
-//     _darkTheme = !_darkTheme;
-// //    globals.menuGradient=_darkTheme;
-//     _saveToPrefs();
-//     notifyListeners();
-//   }
-
-//   //Loads the _darkTheme bool value from memory and notifies the listeners to change the theme of the application
-//   _loadFromPrefs() async {
-//     await _initPrefs();
-//     _darkTheme = prefs.getBool(key) ?? true;
-//     menuGradient = _darkTheme;
-//     notifyListeners();
-//   }
-
-// //Saves _darkTheme bool value in memory after the preference has been initialized
-//   _saveToPrefs() async {
-//     await _initPrefs();
-//     prefs.setBool(key, _darkTheme);
-//   }
 }

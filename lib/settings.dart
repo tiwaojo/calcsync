@@ -26,10 +26,10 @@ class _SettingsState extends State<Settings> {
                   ?.copyWith(color: Theme.of(context).focusColor),
             ),
             onChanged: (bool value) {
-              notifier.toggleTheme();
+              // notifier.toggleTheme(value);
               setState(() {
-                notifier.toggleTheme();
-                print(notifier.toggleTheme());
+                notifier.toggleTheme(value);
+                // print(notifier.toggleTheme(value));
                 print("Value of theme: $value");
               });
             },
@@ -39,10 +39,12 @@ class _SettingsState extends State<Settings> {
           value: _autofocus,
           secondary: Icon(Icons.center_focus_weak_rounded),
           subtitle: Text("Enable auto focus of text"),
-          controlAffinity: ListTileControlAffinity.platform,
+          // controlAffinity: ListTileControlAffinity.platform,
           onChanged: (value) {
             setState(() {
               _autofocus = value;
+              print(value);
+              print("Autofocus: $_autofocus");
             });
           },
           title: Text(

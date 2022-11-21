@@ -37,10 +37,10 @@ class CalsyncGoogleOAuth {
     googleSignIn = GoogleSignIn(
         scopes: <String>[CalendarApi.calendarScope],
         clientId:
-            "466724563377-n6jonalgbl0n7vjefj2n4paufv4cic7d.apps.googleusercontent.com",
+            "466724563377-5jl8rqj52qt73iqukrlfoeqvk7gmeman.apps.googleusercontent.com",
         serverClientId:
             //Platform.isAndroid ?
-            "466724563377-n6jonalgbl0n7vjefj2n4paufv4cic7d.apps.googleusercontent.com"
+            "466724563377-5jl8rqj52qt73iqukrlfoeqvk7gmeman.apps.googleusercontent.com"
         //  : "466724563377-na4725bb0fmgl93mhrqj60brcbpehqkg.apps.googleusercontent.com", // getClientId(),
         );
     // changeUser();
@@ -88,7 +88,7 @@ class CalsyncGoogleOAuth {
     try {
       await googleSignIn.signIn();
       // setState(() {
-      _currentUser = googleSignIn.currentUser?.email as GoogleSignInAccount?;
+      _currentUser = googleSignIn.currentUser;
       // });
     } catch (error) {
       print(error); // ignore: avoid_print

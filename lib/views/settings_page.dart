@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../auth/calsync_auth.dart';
+import '../settings.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -18,6 +19,7 @@ class _SettingsPageState extends State<SettingsPage> {
           Container(
             child: Center(child: CalsyncAuth()),
           ),
+          Settings(),
         ],
       ),
     );
