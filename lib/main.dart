@@ -1,5 +1,4 @@
 import 'package:calsync/auth/calsync_auth.dart';
-import 'package:calsync/events/read_events.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
