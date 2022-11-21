@@ -1,6 +1,5 @@
 import 'package:calsync/auth/calsync_auth.dart';
 import 'package:calsync/events/read_events.dart';
-import 'package:calsync/views/monthly.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -78,7 +77,7 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
         title: Text(widget.title),
       ),
       body: const Center(
-        child: MonthView(),
+        child: CalsyncAuth(),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
