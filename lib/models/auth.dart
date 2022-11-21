@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -10,9 +9,10 @@ import 'package:googleapis/calendar/v3.dart';
 import 'package:googleapis_auth/googleapis_auth.dart' as auth show AuthClient;
 
 class CalsyncGoogleOAuth {
+  // CalsyncGoogleOAuth._(); //private constructor
   GoogleSignInAccount? _currentUser;
   static String calList = "Empty Calendar List";
-  late final GoogleSignIn _googleSignIn;
+  late final GoogleSignIn googleSignIn;
 
   Future<String> _getClientId() async {
     final response = await rootBundle
@@ -23,7 +23,9 @@ class CalsyncGoogleOAuth {
     return clientId["client_id"];
   }
 
-  // CalsyncGoogleOAuth() {
+  set currentUser(GoogleSignInAccount value) {
+    _currentUser = value;
+  } // CalsyncGoogleOAuth() {
   //   getClientId().then((value) => print(value));
   //   signIn();
   // }
@@ -31,39 +33,40 @@ class CalsyncGoogleOAuth {
   GoogleSignInAccount? get getCurrentUser => _currentUser;
 
   void signIn() {
-    _getClientId().then((value) => print(value));
-    _googleSignIn = GoogleSignIn(
-      scopes: <String>[CalendarApi.calendarScope],
-      clientId:
-          "466724563377-lbfuln359gn1fkcnm41vk92fiqmvt825.apps.googleusercontent.com",
-      serverClientId: Platform.isAndroid
-          ? "466724563377-lbfuln359gn1fkcnm41vk92fiqmvt825.apps.googleusercontent.com"
-          : "466724563377-na4725bb0fmgl93mhrqj60brcbpehqkg.apps.googleusercontent.com", // getClientId(),
-    );
-    changeUser();
+    // _getClientId().then((value) => print(value));
+    googleSignIn = GoogleSignIn(
+        scopes: <String>[CalendarApi.calendarScope],
+        clientId:
+            "466724563377-n6jonalgbl0n7vjefj2n4paufv4cic7d.apps.googleusercontent.com",
+        serverClientId:
+            //Platform.isAndroid ?
+            "466724563377-n6jonalgbl0n7vjefj2n4paufv4cic7d.apps.googleusercontent.com"
+        //  : "466724563377-na4725bb0fmgl93mhrqj60brcbpehqkg.apps.googleusercontent.com", // getClientId(),
+        );
+    // changeUser();
     // return _currentUser;
   }
 
-  void changeUser() {
-    _googleSignIn.onCurrentUserChanged
-        .listen((GoogleSignInAccount? account) async {
-      // setState(() {
-      _currentUser = account;
-      // });
-      if (_currentUser != null) {
-        if (kDebugMode) {
-          print("Not signed in");
-        }
-        getCalendars();
-      }
-    });
-    _googleSignIn.signInSilently();
-    // getCalendars();
-  }
+  // void changeUser() {
+  //   _googleSignIn.onCurrentUserChanged
+  //       .listen((GoogleSignInAccount? account) async {
+  //     setState(() {
+  //       _currentUser = account;
+  //     });
+  //     if (_currentUser != null) {
+  //       if (kDebugMode) {
+  //         print("Not signed in");
+  //       }
+  //       getCalendars();
+  //     }
+  //   });
+  //   _googleSignIn.signInSilently();
+  //   // getCalendars();
+  // }
 
   Future<void> getCalendars() async {
     // Retrieve an [auth.AuthClient] from the current [GoogleSignIn] instance.
-    final auth.AuthClient? client = await _googleSignIn
+    final auth.AuthClient? client = await googleSignIn
         .authenticatedClient(); // a subscription to when the current user changes
 
     assert(client != null, 'Authenticated client missing!');
@@ -83,14 +86,14 @@ class CalsyncGoogleOAuth {
 
   Future<void> handleSignIn() async {
     try {
-      await _googleSignIn.signIn();
+      await googleSignIn.signIn();
       // setState(() {
-      _currentUser = _googleSignIn.currentUser?.email as GoogleSignInAccount?;
+      _currentUser = googleSignIn.currentUser?.email as GoogleSignInAccount?;
       // });
     } catch (error) {
       print(error); // ignore: avoid_print
     }
   }
 
-  Future handleSignOut() => _googleSignIn.disconnect();
+  Future handleSignOut() => googleSignIn.disconnect();
 }

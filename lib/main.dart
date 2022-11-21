@@ -6,6 +6,7 @@ import 'package:calsync/views/settings_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
 
@@ -24,37 +25,44 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Calsync',
-      theme: CalsyncThemes.light,
-      darkTheme: CalsyncThemes.dark,
-      home: const CalSyncHomePage(title: 'Calsync'),
-      onGenerateRoute: (RouteSettings routeParam) {
-        // https://youtu.be/-XMexZCMCzU
-        // Auto generate routes by using patterns
-        final List<String> path = routeParam.name!.split('/');
-        if (path[0] != '') {
-          print("Path: $path");
-          return null;
-        }
+    return ChangeNotifierProvider(
+      create: (_) => CalsyncThemeNotification(),
+      child: Consumer<CalsyncThemeNotification>(builder:
+          (BuildContext context, CalsyncThemeNotification notifier, child) {
+        return MaterialApp(
+          title: 'Calsync',
+          theme: notifier.darkTheme ? CalsyncThemes.dark : CalsyncThemes.light,
+          darkTheme: CalsyncThemes.dark,
+          themeMode: ThemeMode.system,
+          home: const CalSyncHomePage(title: 'Calsync'),
+          onGenerateRoute: (RouteSettings routeParam) {
+            // https://youtu.be/-XMexZCMCzU
+            // Auto generate routes by using patterns
+            final List<String> path = routeParam.name!.split('/');
+            if (path[0] != '') {
+              print("Path: $path");
+              return null;
+            }
 
-        switch (path[1]) {
-          // case 'schedule':
-          //   return MaterialPageRoute(
-          //       builder: (BuildContext context) => SchedulePage());
-          // case 'day':
-          //   return MaterialPageRoute(
-          //       builder: (BuildContext context) => DayPage());
-          // case 'month':
-          //   return MaterialPageRoute(
-          //       builder: (BuildContext context) => MonthPage());
-          case 'settings':
-            return MaterialPageRoute(
-                builder: (BuildContext context) => SettingsPage());
-          default:
-            return null;
-        }
-      },
+            switch (path[1]) {
+              // case 'schedule':
+              //   return MaterialPageRoute(
+              //       builder: (BuildContext context) => SchedulePage());
+              // case 'day':
+              //   return MaterialPageRoute(
+              //       builder: (BuildContext context) => DayPage());
+              // case 'month':
+              //   return MaterialPageRoute(
+              //       builder: (BuildContext context) => MonthPage());
+              case 'settings':
+                return MaterialPageRoute(
+                    builder: (BuildContext context) => SettingsPage());
+              default:
+                return null;
+            }
+          },
+        );
+      }),
     );
   }
 }
@@ -88,11 +96,12 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
     ),
   ];
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   initialization();
-  // }
+  @override
+  void initState() {
+    super.initState();
+    // initialization();
+  }
+
   //
   // void initialization() async {
   //   // This is where you can initialize the resources needed by your app while

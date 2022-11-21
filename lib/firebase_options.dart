@@ -45,7 +45,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyBqp2TwCtIiwP_mtbBLuVjhDxrjtPdtHBU',
-    appId: '1:573300521024:web:72148fe1cb1aaa26ed87a5',
+    appId: '1:573300521024:web:b8c864e5f2899195ed87a5',
     messagingSenderId: '573300521024',
     projectId: 'calsync-a53ec',
     authDomain: 'calsync-a53ec.firebaseapp.com',
@@ -54,7 +54,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDV1LbhS8TnarzVOsZIqKxfBCuBxnGZs3U',
-    appId: '1:573300521024:android:6fa02569ec904951ed87a5',
+    appId: '1:573300521024:android:492c0e2d5cc4822bed87a5',
     messagingSenderId: '573300521024',
     projectId: 'calsync-a53ec',
     storageBucket: 'calsync-a53ec.appspot.com',
@@ -62,7 +62,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBeqiDkbQyv_syDy2NcfCJWY4Sgc0np8Ss',
-    appId: '1:573300521024:ios:8dadba4cc0320627ed87a5',
+    appId: '1:573300521024:ios:85db62354629b8c2ed87a5',
     messagingSenderId: '573300521024',
     projectId: 'calsync-a53ec',
     storageBucket: 'calsync-a53ec.appspot.com',
@@ -73,7 +73,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyBeqiDkbQyv_syDy2NcfCJWY4Sgc0np8Ss',
-    appId: '1:573300521024:ios:8dadba4cc0320627ed87a5',
+    appId: '1:573300521024:ios:85db62354629b8c2ed87a5',
     messagingSenderId: '573300521024',
     projectId: 'calsync-a53ec',
     storageBucket: 'calsync-a53ec.appspot.com',

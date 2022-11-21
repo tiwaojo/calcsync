@@ -1,7 +1,10 @@
 import 'package:calsync/themes/text_themes.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class CalsyncThemes {
+class CalsyncThemes extends ChangeNotifier {
+  CalsyncThemes._(); // private constructor t prevent creating an instance
+
   static ThemeData light = ThemeData(
     textTheme: CalsyncThemesText.calsyncTextThemeL,
     inputDecorationTheme: InputDecorationTheme(
@@ -35,6 +38,7 @@ class CalsyncThemes {
       color: Colors.brown,
       shape: CircularNotchedRectangle(),
     ),
+    brightness: Brightness.light,
     progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: Colors.amber,
         circularTrackColor: Colors.greenAccent,
@@ -77,15 +81,42 @@ class CalsyncThemes {
     focusColor: const Color(0xFFC8C8C8),
     backgroundColor: const Color(0xFF202836),
     primarySwatch: Colors.blue,
+    brightness: Brightness.dark,
   );
 }
 
-// class ThemeNotifier extends ChangeNotifier {
-//   final String key = "theme";
-//   SharedPreferences prefs;
-//   bool _darkTheme;
+class CalsyncThemeNotification extends ChangeNotifier {
+  static const String _themeKey = "theme_key";
+  bool _darkTheme = false;
 
-//   bool get darkTheme => _darkTheme;
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+//   Future<SharedPreferences> initPrefs() async {
+//     _prefs ??= (await SharedPreferences.getInstance());
+//   }
+
+  Future<void> _setThemeSharedPref() async {
+    // final SharedPreferences prefs = await _prefs; //Initializes shared preferences in current scope for theme and awaits for the instance
+    // final theme = prefs.setBool(_themeKey, _darkTheme);
+    _prefs.then(
+        (SharedPreferences prefs) => prefs.setBool(_themeKey, _darkTheme));
+  }
+
+  Future<void> _getThemeSharedPref() async {
+    // final SharedPreferences prefs = await _prefs;
+    _prefs.then(
+        (SharedPreferences prefs) => {_darkTheme = prefs.getBool(_themeKey)!});
+    notifyListeners();
+    // return prefs.getBool(_themeKey) ?? false; // If theme key doesn't exist return false
+  }
+
+  toggleTheme() {
+    _darkTheme = !_darkTheme;
+    _setThemeSharedPref();
+    notifyListeners(); // Calls all listeners to update their state
+  }
+
+  bool get darkTheme => _darkTheme;
 
 //   ThemeNotifier() {
 //     _darkTheme = true;
@@ -97,11 +128,6 @@ class CalsyncThemes {
 // //    globals.menuGradient=_darkTheme;
 //     _saveToPrefs();
 //     notifyListeners();
-//   }
-
-//   //Initializes shared preferences for theme and awaits for the instance
-//   _initPrefs() async {
-//     if (prefs == null) prefs = await SharedPreferences.getInstance();
 //   }
 
 //   //Loads the _darkTheme bool value from memory and notifies the listeners to change the theme of the application
@@ -117,4 +143,4 @@ class CalsyncThemes {
 //     await _initPrefs();
 //     prefs.setBool(key, _darkTheme);
 //   }
-// }
+}

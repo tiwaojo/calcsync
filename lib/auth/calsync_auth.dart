@@ -1,6 +1,7 @@
 import 'package:calsync/models/auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class CalsyncAuth extends StatefulWidget {
   const CalsyncAuth({Key? key}) : super(key: key);
@@ -10,14 +11,14 @@ class CalsyncAuth extends StatefulWidget {
 }
 
 class _CalsyncAuthState extends State<CalsyncAuth> {
-  final CalsyncGoogleOAuth _calsyncGoogleOAuth = new CalsyncGoogleOAuth();
+  final CalsyncGoogleOAuth _calsyncGoogleOAuth = CalsyncGoogleOAuth();
 
   @override
   void initState() {
     super.initState();
     _calsyncGoogleOAuth.signIn();
+    changeUser();
     // _calsyncGoogleOAuth.handleSignIn();
-    // _calsyncGoogleOAuth.changeUser();
     // _googleSignIn = GoogleSignIn(
     //   scopes: <String>[CalendarApi.calendarScope],
     //   serverClientId: Platform.isAndroid
@@ -38,6 +39,23 @@ class _CalsyncAuthState extends State<CalsyncAuth> {
     //   }
     // });
     // _googleSignIn.signInSilently();
+  }
+
+  void changeUser() {
+    _calsyncGoogleOAuth.googleSignIn.onCurrentUserChanged
+        .listen((GoogleSignInAccount? account) async {
+      setState(() {
+        _calsyncGoogleOAuth.currentUser = account!;
+      });
+      if (_calsyncGoogleOAuth.getCurrentUser != null) {
+        if (kDebugMode) {
+          print("Not signed in");
+        }
+        _calsyncGoogleOAuth.getCalendars();
+      }
+    });
+    _calsyncGoogleOAuth.googleSignIn.signInSilently();
+    // getCalendars();
   }
 
   @override
