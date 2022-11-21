@@ -75,8 +75,8 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: const CalsyncAuth(),
+      body: const Center(
+        child: CalsyncAuth(),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
