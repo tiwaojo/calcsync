@@ -7,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:calsync/add_events.dart';
 
 import 'firebase_options.dart';
 
@@ -171,9 +172,9 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
             showModalBottomSheet(
                 context: context,
                 builder: (context) {
-                  return const SingleChildScrollView(
-                    // child: AddEvent(),
-                    child: Text("Hola"),
+                  return SingleChildScrollView(
+                    child: AddEvent(),
+                    //child: Text("Hola"),
                   );
                 },
                 backgroundColor: Theme.of(context).disabledColor,

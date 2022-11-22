@@ -4,22 +4,22 @@ import '../db/firestore_crud.dart';
 import '../db/firestore.dart';
 import '../models/event.dart';
 
-class add_events extends StatelessWidget {
+// class add_events extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: " Test",
+//       home: addEvent(),
+//     );
+//   }
+// }
+
+class AddEvent extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: " Test",
-      home: addEvent(),
-    );
-  }
+  State<AddEvent> createState() => _AddEventState();
 }
 
-class addEvent extends StatefulWidget {
-  @override
-  State<addEvent> createState() => _addEventState();
-}
-
-class _addEventState extends State<addEvent> {
+class _AddEventState extends State<AddEvent> {
   String title = '';
   String discription = '';
   DateTime start_day = DateTime.now();
@@ -29,61 +29,55 @@ class _addEventState extends State<addEvent> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Add Event'),
-        centerTitle: true,
-      ),
-      body: Container(
-        child: Column(children: [
-          TextFormField(
-            decoration: InputDecoration(hintText: 'Title'),
-            onChanged: (value) => setState(() => title = value),
-          ),
-          TextFormField(
-            decoration: InputDecoration(hintText: 'Description'),
-            onChanged: (value) => setState(() => discription = value),
-          ),
-          Text("Select the start time of your event"),
-          ListTile(
-            title: Text(
-                "Date: ${start_day.year}, ${start_day.month}, ${start_day.day}"),
-            trailing: Icon(Icons.calendar_today),
-            onTap: () {
-              _pickStartDate(context);
+    return Container(
+      child: Column(children: [
+        TextFormField(
+          decoration: InputDecoration(hintText: 'Title'),
+          onChanged: (value) => setState(() => title = value),
+        ),
+        TextFormField(
+          decoration: InputDecoration(hintText: 'Description'),
+          onChanged: (value) => setState(() => discription = value),
+        ),
+        Text("Select the start time of your event"),
+        ListTile(
+          title: Text(
+              "Date: ${start_day.year}, ${start_day.month}, ${start_day.day}"),
+          trailing: Icon(Icons.calendar_today),
+          onTap: () {
+            _pickStartDate(context);
+          },
+        ),
+        ListTile(
+          title: Text("Time: ${start_time.hour}:${start_time.minute}"),
+          trailing: Icon(Icons.access_time),
+          onTap: () {
+            _pickStartTime(context);
+          },
+        ),
+        Text("Select the end time of your event"),
+        ListTile(
+          title:
+              Text("Date: ${end_day.year}, ${end_day.month}, ${end_day.day}"),
+          trailing: Icon(Icons.calendar_today),
+          onTap: () {
+            _pickEndDate(context);
+          },
+        ),
+        ListTile(
+          title: Text("Time: ${end_time.hour}:${end_time.minute}"),
+          trailing: Icon(Icons.access_time),
+          onTap: () {
+            _pickEndTime(context);
+          },
+        ),
+        ElevatedButton(
+            onPressed: () {
+              create_event(
+                  title, discription, start_day, start_time, end_day, end_time);
             },
-          ),
-          ListTile(
-            title: Text("Time: ${start_time.hour}:${start_time.minute}"),
-            trailing: Icon(Icons.access_time),
-            onTap: () {
-              _pickStartTime(context);
-            },
-          ),
-          Text("Select the end time of your event"),
-          ListTile(
-            title:
-                Text("Date: ${end_day.year}, ${end_day.month}, ${end_day.day}"),
-            trailing: Icon(Icons.calendar_today),
-            onTap: () {
-              _pickEndDate(context);
-            },
-          ),
-          ListTile(
-            title: Text("Time: ${end_time.hour}:${end_time.minute}"),
-            trailing: Icon(Icons.access_time),
-            onTap: () {
-              _pickEndTime(context);
-            },
-          ),
-          ElevatedButton(
-              onPressed: () {
-                create_event(title, discription, start_day, start_time, end_day,
-                    end_time);
-              },
-              child: Text("Create Event")),
-        ]),
-      ),
+            child: Text("Create Event")),
+      ]),
     );
   }
 

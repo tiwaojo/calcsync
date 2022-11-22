@@ -101,12 +101,6 @@ class _CalsyncAuthState extends State<CalsyncAuth> {
         ElevatedButton(
             onPressed: _handleSignIn, child: Text("Sign in to google")),
         ElevatedButton(onPressed: listCalendars, child: Text("List calendars")),
-        ElevatedButton(
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => add_events()));
-            },
-            child: Text("Add Event (test)")),
         Text(calList),
         Text(userDetails)
       ],
