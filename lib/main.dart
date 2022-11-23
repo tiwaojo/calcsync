@@ -1,19 +1,21 @@
-import 'package:calsync/themes/themes.dart';
-import 'package:calsync/views/day_page.dart';
-import 'package:calsync/views/month_page.dart';
-import 'package:calsync/views/schedule_page.dart';
-import 'package:calsync/views/settings_page.dart';
+import 'package:calendar_sync/themes/themes.dart';
+import 'package:calendar_sync/views/day_page.dart';
+import 'package:calendar_sync/views/month_page.dart';
+import 'package:calendar_sync/views/schedule_page.dart';
+import 'package:calendar_sync/views/settings_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform, name: "Calsync");
+      options: DefaultFirebaseOptions.currentPlatform, name: "Calsync-Project");
   runApp(const MyApp());
 }
 
@@ -32,8 +34,9 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           title: 'Calsync',
           theme: notifier.darkTheme ? CalsyncThemes.dark : CalsyncThemes.light,
-          // darkTheme: CalsyncThemes.dark,
-          // themeMode: ThemeMode.system,
+          // theme: CalsyncThemes.light,
+          darkTheme: CalsyncThemes.dark,
+          themeMode: ThemeMode.system,
           home: const CalSyncHomePage(title: 'Calsync'),
           onGenerateRoute: (RouteSettings routeParam) {
             // https://youtu.be/-XMexZCMCzU
@@ -99,24 +102,24 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
   @override
   void initState() {
     super.initState();
-    // initialization();
+    initialization();
+    // FlutterNativeSplash.remove();
   }
 
-  //
-  // void initialization() async {
-  //   // This is where you can initialize the resources needed by your app while
-  //   // the splash screen is displayed.  Remove the following example because
-  //   // delaying the user experience is a bad design practice!
-  //   // ignore_for_file: avoid_print
-  //   print('ready in 3...');
-  //   await Future.delayed(const Duration(seconds: 1));
-  //   print('ready in 2...');
-  //   await Future.delayed(const Duration(seconds: 1));
-  //   print('ready in 1...');
-  //   await Future.delayed(const Duration(seconds: 1));
-  //   print('go!');
-  //   FlutterNativeSplash.remove();
-  // }
+  void initialization() async {
+    // This is where you can initialize the resources needed by your app while
+    // the splash screen is displayed.  Remove the following example because
+    // delaying the user experience is a bad design practice!
+    // ignore_for_file: avoid_print
+    print('ready in 3...');
+    await Future.delayed(const Duration(seconds: 2));
+    print('ready in 2...');
+    await Future.delayed(const Duration(seconds: 2));
+    print('ready in 1...');
+    await Future.delayed(const Duration(seconds: 2));
+    print('go!');
+    FlutterNativeSplash.remove();
+  }
 
   final routes = [
     SchedulePage(),

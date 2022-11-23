@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+
 /// Provides the `GoogleSignIn` class
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/calendar/v3.dart';
@@ -14,6 +15,7 @@ class CalsyncGoogleOAuth {
   static String calList = "Empty Calendar List";
   late final GoogleSignIn googleSignIn;
 
+// TODO: To complete the usage of internet resources project requirement
   Future<String> _getClientId() async {
     final response = await rootBundle
         .loadString('assets/client_secret.json'); // load client_secret.json

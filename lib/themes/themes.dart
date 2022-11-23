@@ -1,4 +1,5 @@
-import 'package:calsync/themes/text_themes.dart';
+// import 'package:calsync/themes/text_themes.dart';
+import 'text_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -88,7 +89,10 @@ class CalsyncThemes extends ChangeNotifier {
 class CalsyncThemeNotification extends ChangeNotifier {
   static const String _themeKey = "theme_key";
   bool _darkTheme = false;
-
+  CalsyncThemeNotification() {
+    _darkTheme = true;
+    getThemeSharedPref();
+  }
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
 //   Future<SharedPreferences> initPrefs() async {
@@ -103,11 +107,11 @@ class CalsyncThemeNotification extends ChangeNotifier {
   }
 
   Future<void> getThemeSharedPref() async {
-    // final SharedPreferences prefs = await _prefs;
-    _prefs.then(
-        (SharedPreferences prefs) => {_darkTheme = prefs.getBool(_themeKey)!});
+    final SharedPreferences prefs = await _prefs;
+    _prefs.then(        (SharedPreferences prefs) => {_darkTheme = prefs.getBool(_themeKey)!});
+    // _darkTheme = prefs.getBool(_themeKey) ??
+    //     false; // If theme key doesn't exist return false
     notifyListeners();
-    // return prefs.getBool(_themeKey) ?? false; // If theme key doesn't exist return false
   }
 
   toggleTheme(bool value) {
