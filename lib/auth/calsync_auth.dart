@@ -2,6 +2,11 @@
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart'; //https://pub.dev/packages/extension_google_sign_in_as_googleapis_auth/example
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+import 'package:calsync/add_events.dart';
+
+/// Provides the `GoogleSignIn` class
+
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/calendar/v3.dart';
 import 'package:googleapis_auth/googleapis_auth.dart' as auth show AuthClient;
