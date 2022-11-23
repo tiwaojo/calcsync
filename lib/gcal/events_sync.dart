@@ -23,9 +23,6 @@ class _EventsSyncState extends State<EventsSync> {
   // "");
   // }
 
-  // SHA1: F3:9A:83:5F:E2:7F:BC:B4:E1:77:A5:55:B5:5B:7D:FD:47:89:3D:4A
-  // SHA256: CB:01:47:D2:3E:0C:D6:38:C3:81:39:1E:79:1D:5F:6A:EE:9E:BC:38:7B:1A:CA:5B:8E:B0:63:13:2D:F6:48:16
-
   void getEvents() {
     setState(() {
       //  TODO: implement method of gathering events from gcal

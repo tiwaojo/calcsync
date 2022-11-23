@@ -1,4 +1,4 @@
-import 'package:calsync/themes/themes.dart';
+import 'package:calendar_sync/themes/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

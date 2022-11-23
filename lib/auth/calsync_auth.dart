@@ -1,4 +1,4 @@
-import 'package:calsync/models/auth.dart';
+// import 'package:calsync/models/auth.dart';
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart'; //https://pub.dev/packages/extension_google_sign_in_as_googleapis_auth/example
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -19,39 +19,36 @@ class CalsyncAuth extends StatefulWidget {
 }
 
 class _CalsyncAuthState extends State<CalsyncAuth> {
-  final CalsyncGoogleOAuth _calsyncGoogleOAuth = CalsyncGoogleOAuth();
+  // final CalsyncGoogleOAuth _calsyncGoogleOAuth = CalsyncGoogleOAuth();
   GoogleSignInAccount? _currentUser;
-  String calList = "Empty Calendar List";
+  late Events eventsList; // = "Empty Calendar List";
+  CalendarList _calendarList = CalendarList();
   String userDetails = "user";
   late final GoogleSignIn _googleSignIn = GoogleSignIn(
-      scopes: <String>[CalendarApi.calendarReadonlyScope],
+      scopes: <String>[CalendarApi.calendarScope],
       serverClientId:
-          // Platform.isAndroid ?
-          "466724563377-5jl8rqj52qt73iqukrlfoeqvk7gmeman.apps.googleusercontent.com"
-      // : "466724563377-na4725bb0fmgl93mhrqj60brcbpehqkg.apps.googleusercontent.com", // getClientId(),
+          Platform.isAndroid ?
+          "209176434525-7c14rp97kdg9r5s5l0q48i9q0u9bieh1.apps.googleusercontent.com"
+      : "209176434525-jvffc44tf0qjocbrbjrmbib4mcdaipf0.apps.googleusercontent.com", // getClientId(),
       ); // initialize at runtime
   @override
   void initState() {
     super.initState();
     print("init");
-    //   _calsyncGoogleOAuth.signIn();
-    //   changeUser();
-    //   // _calsyncGoogleOAuth.handleSignIn();
-    //   //
-    _googleSignIn.onCurrentUserChanged
-        .listen((GoogleSignInAccount? account) async {
+    // handleSignIn();
+    signIn();
+  }
+
+  void signIn() {
+    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
       setState(() {
         _currentUser = account;
       });
-      if (_currentUser != null) {
-        if (kDebugMode) {
-          print("signed in");
-          print(_currentUser);
-        }
-        getCalendars();
-      }
     });
-    _googleSignIn.signInSilently();
+    _googleSignIn.signInSilently().then((value) {
+      print(value);
+      _currentUser = value;
+    });
   }
 
   Future<void> getCalendars() async {
@@ -61,43 +58,57 @@ class _CalsyncAuthState extends State<CalsyncAuth> {
 
     assert(client != null, 'Authenticated client missing!');
 
-    var gCalAPI = CalendarApi(client!);
-    calList = (await gCalAPI.calendarList.list(maxResults: 5))
-        .items
-        ?.first
-        .description as String;
-    setState(() {
-      if (kDebugMode) {
-        // calList = calendarList as String;
-        print(calList);
+    final gCalAPI = CalendarApi(client!);
+    _calendarList = await gCalAPI.calendarList.list();
+    var it = _calendarList.items?.iterator;
+    if (it != null) {
+      while (it.moveNext()) {
+        if (kDebugMode) {
+          print("Summary of calendar: ${it.current.summary}");
+        }
       }
-    });
+    }
+    // eventsList = await gCalAPI.events
+    //     .list(maxResults: 5, orderBy: "startTime", alwaysIncludeEmail: true);
+    // setState(() {
+    //   var it = _calendarList.items?.iterator;
+    //     while (it!.moveNext()) {
+    //       if (kDebugMode) {
+    //         print(it.current.summary);
+    //         // Text(it.current.summary as String);
+    //         // calList = calendarList as String;
+    //         // print(calList);
+    //       }
+    //     }
+    // });
   }
 
-  void changeUser() {
-    _calsyncGoogleOAuth.googleSignIn.onCurrentUserChanged
-        .listen((GoogleSignInAccount? account) async {
-      setState(() {
-        _calsyncGoogleOAuth.currentUser = account!;
-      });
-      if (_calsyncGoogleOAuth.getCurrentUser != null) {
-        if (kDebugMode) {
-          print("Not signed in");
-        }
-        _calsyncGoogleOAuth.getCalendars();
-      }
-    });
-    _calsyncGoogleOAuth.googleSignIn.signInSilently();
-    // getCalendars();
-  }
+  // void changeUser() {
+  //   _calsyncGoogleOAuth.googleSignIn.onCurrentUserChanged
+  //       .listen((GoogleSignInAccount? account) async {
+  //     setState(() {
+  //       _calsyncGoogleOAuth.currentUser = account!;
+  //     });
+  //     if (_calsyncGoogleOAuth.getCurrentUser != null) {
+  //       if (kDebugMode) {
+  //         print("Not signed in");
+  //       }
+  //       _calsyncGoogleOAuth.getCalendars();
+  //     }
+  //   });
+  //   _calsyncGoogleOAuth.googleSignIn.signInSilently();
+  //   // getCalendars();
+  // }
 
   Future<void> handleSignIn() async {
     try {
-      await _googleSignIn.signIn();
+      await _googleSignIn.signIn().then((value) {
+        _currentUser = value;
+      });
     } catch (error) {
       print(error); // ignore: avoid_print
     } finally {
-      getCalendars();
+      getCalendars(); //
     }
   }
 
@@ -142,30 +153,51 @@ class _CalsyncAuthState extends State<CalsyncAuth> {
     }
   }
 
+  List<Widget> printCalendars() {
+    getCalendars();
+    List<Text> calendarItems = [];
+
+    var it = _calendarList.items?.iterator;
+    if (it != null) {
+      while (it.moveNext()) {
+        if (kDebugMode) {
+          print(it.current.summary);
+        }
+        setState(() {
+          var newItem = Text(it.current.summary as String);
+          calendarItems.add(newItem);
+        });
+      }
+    }
+    return calendarItems;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 200),
-      child: Column(
-        children: [
-          // _googleSignIn != null ? userImage() : Text("lorem ipsum..."),
-          ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  // _calsyncGoogleOAuth.handleSignIn();
-                  handleSignIn();
-                  print(_googleSignIn.currentUser);
-                });
-              },
-              child: Text("Sign in to google")),
-          ElevatedButton(
-              onPressed: _calsyncGoogleOAuth.getCalendars,
-              child: Text("List calendars")),
-          Text(CalsyncGoogleOAuth.calList),
-          _buildBody(),
-        ],
-      ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ElevatedButton(onPressed: getCalendars, child: Text("List calendars")),
+        buildCalendarList(),
+        _buildBody(),
+      ],
     );
+  }
+
+  Widget buildCalendarList() {
+    if (_calendarList.items != null) {
+      return SizedBox(
+        width: 300.0,
+        height: 300.0,
+        child: ListView(
+          scrollDirection: Axis.vertical,
+          children: printCalendars(),
+        ),
+      );
+    } else {
+      return Text("Calendar List not available");
+    }
   }
 
   Image userImage() {

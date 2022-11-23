@@ -1,7 +1,7 @@
 {
   "file_generated_by": "FlutterFire CLI",
   "purpose": "FirebaseAppID & ProjectID for this Firebase app in this directory",
-  "GOOGLE_APP_ID": "1:573300521024:ios:85db62354629b8c2ed87a5",
-  "FIREBASE_PROJECT_ID": "calsync-a53ec",
-  "GCM_SENDER_ID": "573300521024"
+  "GOOGLE_APP_ID": "1:209176434525:ios:27fca009295567bdc07ab4",
+  "FIREBASE_PROJECT_ID": "calendar-sync-project-369417",
+  "GCM_SENDER_ID": "209176434525"
 }
