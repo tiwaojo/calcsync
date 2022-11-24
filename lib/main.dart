@@ -128,19 +128,6 @@ class _SignInPageState extends State<SignInPage> {
     await Future.delayed(const Duration(seconds: 2));
     print('go!');
     FlutterNativeSplash.remove();
-
-    // calsyncGoogleOAuth.googleSignIn.onCurrentUserChanged
-    //     .listen((GoogleSignInAccount? account) {
-    //   setState(() {
-    //     calsyncGoogleOAuth.currentUser = account;
-    //     // _currentUser ?? getCalendars();
-    //
-    //     if (calsyncGoogleOAuth.currentUser != null) {
-    //       calsyncGoogleOAuth.getCalendars();
-    //     }
-    //   });
-    // }); // https://youtu.be/Q00Foa8CiDk
-    // calsyncGoogleOAuth.googleSignIn.signInSilently();
   }
 
   @override
