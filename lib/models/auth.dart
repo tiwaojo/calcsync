@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -10,10 +11,26 @@ import 'package:googleapis/calendar/v3.dart';
 import 'package:googleapis_auth/googleapis_auth.dart' as auth show AuthClient;
 
 class CalsyncGoogleOAuth {
+  // Resource used: https://pub.dev/packages/extension_google_sign_in_as_googleapis_auth
+  // flutter.dev/go/google-apis
+  // https://youtu.be/z4MsuZiEezY
+  // https://youtu.be/E5WgU6ERZzA
+
   // CalsyncGoogleOAuth._(); //private constructor
   GoogleSignInAccount? _currentUser;
-  static String calList = "Empty Calendar List";
-  late final GoogleSignIn googleSignIn;
+  Events eventsList = Events();
+  CalendarList _calendarList = CalendarList();
+  late final GoogleSignIn googleSignIn = GoogleSignIn(
+    scopes: <String>[CalendarApi.calendarScope],
+    serverClientId: Platform.isAndroid
+        ? "209176434525-7c14rp97kdg9r5s5l0q48i9q0u9bieh1.apps.googleusercontent.com"
+        : "209176434525-jvffc44tf0qjocbrbjrmbib4mcdaipf0.apps.googleusercontent.com", // getClientId(),
+  ); // initialize at runtime;
+
+  CalsyncGoogleOAuth() {
+    // _getClientId().then((value) => print(value));
+    signIn();
+  }
 
 // TODO: To complete the usage of internet resources project requirement
   Future<String> _getClientId() async {
@@ -26,27 +43,22 @@ class CalsyncGoogleOAuth {
   }
 
   set currentUser(GoogleSignInAccount value) {
-    _currentUser = value;
-  } // CalsyncGoogleOAuth() {
-  //   getClientId().then((value) => print(value));
-  //   signIn();
-  // }
+    _currentUser = value; // Set Current User Signin
+  }
 
-  GoogleSignInAccount? get getCurrentUser => _currentUser;
+  GoogleSignInAccount? get getCurrentUser =>
+      _currentUser; // Get Current User Signin
 
   void signIn() {
     // _getClientId().then((value) => print(value));
-    googleSignIn = GoogleSignIn(
-        scopes: <String>[CalendarApi.calendarScope],
-        clientId:
-            "466724563377-5jl8rqj52qt73iqukrlfoeqvk7gmeman.apps.googleusercontent.com",
-        serverClientId:
-            //Platform.isAndroid ?
-            "466724563377-5jl8rqj52qt73iqukrlfoeqvk7gmeman.apps.googleusercontent.com"
-        //  : "466724563377-na4725bb0fmgl93mhrqj60brcbpehqkg.apps.googleusercontent.com", // getClientId(),
-        );
-    // changeUser();
-    // return _currentUser;
+    googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
+      // setState(() {
+      _currentUser = account;
+      _currentUser ?? getCalendars();
+
+      // });
+    }); // https://youtu.be/Q00Foa8CiDk
+    googleSignIn.signInSilently();
   }
 
   // void changeUser() {
@@ -73,25 +85,16 @@ class CalsyncGoogleOAuth {
 
     assert(client != null, 'Authenticated client missing!');
 
-    var gCalAPI = CalendarApi(client!);
-    calList = (await gCalAPI.calendarList.list(maxResults: 5))
-        .items
-        ?.first
-        .description as String;
-    // setState(() {
-    if (kDebugMode) {
-      // calList = calendarList as String;
-      print(calList);
-    }
-    // });
+    final gCalAPI = CalendarApi(client!);
+    _calendarList = await gCalAPI.calendarList.list();
+    eventsList = await gCalAPI.events.list("primary");
   }
 
   Future<void> handleSignIn() async {
     try {
-      await googleSignIn.signIn();
-      // setState(() {
-      _currentUser = googleSignIn.currentUser;
-      // });
+      await googleSignIn.signIn().then((value) {
+        _currentUser = value;
+      });
     } catch (error) {
       print(error); // ignore: avoid_print
     }
