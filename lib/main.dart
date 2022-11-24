@@ -1,3 +1,4 @@
+import 'package:calendar_sync/add_events.dart';
 import 'package:calendar_sync/themes/themes.dart';
 import 'package:calendar_sync/views/day_page.dart';
 import 'package:calendar_sync/views/month_page.dart';
@@ -8,8 +9,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
-import 'package:calsync/add_events.dart';
-
 
 import 'firebase_options.dart';
 
@@ -37,8 +36,8 @@ class MyApp extends StatelessWidget {
           title: 'Calsync',
           theme: notifier.darkTheme ? CalsyncThemes.dark : CalsyncThemes.light,
           // theme: CalsyncThemes.light,
-          darkTheme: CalsyncThemes.dark,
-          themeMode: ThemeMode.system,
+          // darkTheme: CalsyncThemes.dark,
+          // themeMode: ThemeMode.system,
           home: const CalSyncHomePage(title: 'Calsync'),
           onGenerateRoute: (RouteSettings routeParam) {
             // https://youtu.be/-XMexZCMCzU
@@ -124,10 +123,10 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
   }
 
   final routes = [
+    SettingsPage(),
     SchedulePage(),
     DayPage(),
     MonthPage(),
-    SettingsPage(),
   ];
 
   @override
