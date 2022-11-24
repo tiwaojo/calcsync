@@ -14,7 +14,7 @@ import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  //FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
@@ -102,7 +102,7 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
   @override
   void initState() {
     super.initState();
-    initialization();
+    //initialization();
     // FlutterNativeSplash.remove();
   }
 

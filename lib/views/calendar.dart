@@ -132,7 +132,8 @@ class _MonthViewState extends State<MonthView> {
                     child: const Text('Edit')),
                 TextButton(
                     onPressed: () {
-                      print("Edit Button Pressed");
+                      print("Delete Button Pressed");
+                      FirestoreCrud.deleteEvent(id: id);
                     },
                     child: const Text('Delete')),
               ],

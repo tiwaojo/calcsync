@@ -1,6 +1,6 @@
 // This is a generated file; do not edit or check into version control.
-FLUTTER_ROOT=C:\Users\Shenanigans\flutter
-FLUTTER_APPLICATION_PATH=C:\Users\Shenanigans\Documents\(Active)UOIT\Classes\Year IV\Semester I\Mobile Dev\Final_Project\Calendar_Sync
+FLUTTER_ROOT=C:\Users\preet\Flutter\flutter
+FLUTTER_APPLICATION_PATH=C:\Users\preet\AndroidStudioProjects\calsync
 COCOAPODS_PARALLEL_CODE_SIGN=true
 FLUTTER_BUILD_DIR=build
 FLUTTER_BUILD_NAME=1.0.0
