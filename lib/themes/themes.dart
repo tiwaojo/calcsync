@@ -108,7 +108,8 @@ class CalsyncThemeNotification extends ChangeNotifier {
 
   Future<void> getThemeSharedPref() async {
     final SharedPreferences prefs = await _prefs;
-    _prefs.then(        (SharedPreferences prefs) => {_darkTheme = prefs.getBool(_themeKey)!});
+    _prefs.then(
+        (SharedPreferences prefs) => {_darkTheme = prefs.getBool(_themeKey)!});
     // _darkTheme = prefs.getBool(_themeKey) ??
     //     false; // If theme key doesn't exist return false
     notifyListeners();

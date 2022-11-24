@@ -62,6 +62,8 @@ class CalsyncGoogleOAuth extends ChangeNotifier {
     googleSignIn.signInSilently();
     if (await googleSignIn.isSignedIn()) {
       notifyListeners();
+    } else {
+      handleSignIn();
     }
   }
 
