@@ -1,3 +1,4 @@
+import 'package:calendar_sync/views/calendar.dart';
 import 'package:flutter/material.dart';
 
 class MonthPage extends StatefulWidget {
@@ -11,7 +12,7 @@ class _MonthPageState extends State<MonthPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Center(child: Text("Month Page")),
+      child: MonthView(),
     );
   }
 }
