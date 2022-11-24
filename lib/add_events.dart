@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'dart:async';
 import '../db/firestore_crud.dart';
-import '../db/firestore.dart';
-import '../models/event.dart';
+import 'models/auth.dart';
 
 // class add_events extends StatelessWidget {
 //   @override
@@ -21,7 +21,7 @@ class AddEvent extends StatefulWidget {
 
 class _AddEventState extends State<AddEvent> {
   String title = '';
-  String discription = '';
+  String description = '';
   DateTime start_day = DateTime.now();
   TimeOfDay start_time = TimeOfDay.now();
   DateTime end_day = DateTime.now();
@@ -29,56 +29,63 @@ class _AddEventState extends State<AddEvent> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(children: [
-        TextFormField(
-          decoration: InputDecoration(hintText: 'Title'),
-          onChanged: (value) => setState(() => title = value),
-        ),
-        TextFormField(
-          decoration: InputDecoration(hintText: 'Description'),
-          onChanged: (value) => setState(() => discription = value),
-        ),
-        Text("Select the start time of your event"),
-        ListTile(
-          title: Text(
-              "Date: ${start_day.year}, ${start_day.month}, ${start_day.day}"),
-          trailing: Icon(Icons.calendar_today),
-          onTap: () {
-            _pickStartDate(context);
-          },
-        ),
-        ListTile(
-          title: Text("Time: ${start_time.hour}:${start_time.minute}"),
-          trailing: Icon(Icons.access_time),
-          onTap: () {
-            _pickStartTime(context);
-          },
-        ),
-        Text("Select the end time of your event"),
-        ListTile(
-          title:
-              Text("Date: ${end_day.year}, ${end_day.month}, ${end_day.day}"),
-          trailing: Icon(Icons.calendar_today),
-          onTap: () {
-            _pickEndDate(context);
-          },
-        ),
-        ListTile(
-          title: Text("Time: ${end_time.hour}:${end_time.minute}"),
-          trailing: Icon(Icons.access_time),
-          onTap: () {
-            _pickEndTime(context);
-          },
-        ),
-        ElevatedButton(
-            onPressed: () {
-              create_event(
-                  title, discription, start_day, start_time, end_day, end_time);
+    return Consumer<CalsyncGoogleOAuth>(
+        builder: (BuildContext context, notifier, child) {
+      String email = "";
+      if (notifier.currentUser != null) {
+        email = notifier.currentUser?.email as String;
+      }
+      return Container(
+        child: Column(children: [
+          TextFormField(
+            decoration: InputDecoration(hintText: 'Title'),
+            onChanged: (value) => setState(() => title = value),
+          ),
+          TextFormField(
+            decoration: InputDecoration(hintText: 'Description'),
+            onChanged: (value) => setState(() => description = value),
+          ),
+          Text("Select the start time of your event"),
+          ListTile(
+            title: Text(
+                "Date: ${start_day.year}, ${start_day.month}, ${start_day.day}"),
+            trailing: Icon(Icons.calendar_today),
+            onTap: () {
+              _pickStartDate(context);
             },
-            child: Text("Create Event")),
-      ]),
-    );
+          ),
+          ListTile(
+            title: Text("Time: ${start_time.hour}:${start_time.minute}"),
+            trailing: Icon(Icons.access_time),
+            onTap: () {
+              _pickStartTime(context);
+            },
+          ),
+          Text("Select the end time of your event"),
+          ListTile(
+            title:
+                Text("Date: ${end_day.year}, ${end_day.month}, ${end_day.day}"),
+            trailing: Icon(Icons.calendar_today),
+            onTap: () {
+              _pickEndDate(context);
+            },
+          ),
+          ListTile(
+            title: Text("Time: ${end_time.hour}:${end_time.minute}"),
+            trailing: Icon(Icons.access_time),
+            onTap: () {
+              _pickEndTime(context);
+            },
+          ),
+          ElevatedButton(
+              onPressed: () {
+                create_event(title, description, start_day, start_time, end_day,
+                    end_time, email);
+              },
+              child: Text("Create Event")),
+        ]),
+      );
+    });
   }
 
   Future<void> _pickStartDate(BuildContext context) async {
@@ -127,8 +134,14 @@ class _AddEventState extends State<AddEvent> {
     }
   }
 
-  void create_event(String title, String discription, DateTime start_day,
-      TimeOfDay start_time, DateTime end_day, TimeOfDay end_time) {
+  void create_event(
+      String title,
+      String discription,
+      DateTime start_day,
+      TimeOfDay start_time,
+      DateTime end_day,
+      TimeOfDay end_time,
+      String email) {
     DateTime to = DateTime(start_day.year, start_day.month, start_day.day,
         start_time.hour, start_time.minute);
     DateTime from = DateTime(end_day.year, end_day.month, end_day.day,
@@ -144,7 +157,7 @@ class _AddEventState extends State<AddEvent> {
         isAllDay: false,
         name: title,
         description: discription,
-        email: "test@test.com");
+        email: email);
 
     showDialog(
         context: context,
