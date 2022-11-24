@@ -1,8 +1,9 @@
 // import 'package:calsync/models/auth.dart';
+import 'dart:io';
+
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart'; //https://pub.dev/packages/extension_google_sign_in_as_googleapis_auth/example
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
 
 /// Provides the `GoogleSignIn` class
 import 'package:google_sign_in/google_sign_in.dart';
@@ -24,9 +25,6 @@ class _CalsyncAuthState extends State<CalsyncAuth> {
   String userDetails = "user";
   late final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: <String>[CalendarApi.calendarScope],
-    serverClientId: Platform.isAndroid
-        ? "209176434525-8eqqripc8q688jsj38k056oathv2g7s5.apps.googleusercontent.com"
-        : "209176434525-jvffc44tf0qjocbrbjrmbib4mcdaipf0.apps.googleusercontent.com", // getClientId(),
   ); // initialize at runtime
 
   @override
@@ -37,14 +35,16 @@ class _CalsyncAuthState extends State<CalsyncAuth> {
     signIn();
   }
 
-  void signIn() {
+  Future<void> signIn() async {
     _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
       setState(() {
         _currentUser = account;
-        getCalendars();
+        if (_currentUser != null) {
+          getCalendars();
+        }
       });
-    }); // https://youtu.be/Q00Foa8CiDk
-    _googleSignIn.signInSilently();
+    });
+    await _googleSignIn.signInSilently();
   }
 
   Future<void> getCalendars() async {
@@ -56,24 +56,8 @@ class _CalsyncAuthState extends State<CalsyncAuth> {
 
     final gCalAPI = CalendarApi(client!);
     _calendarList = await gCalAPI.calendarList.list();
+    eventsList = await gCalAPI.events.list("primary");
   }
-
-  // void changeUser() {
-  //   _calsyncGoogleOAuth.googleSignIn.onCurrentUserChanged
-  //       .listen((GoogleSignInAccount? account) async {
-  //     setState(() {
-  //       _calsyncGoogleOAuth.currentUser = account!;
-  //     });
-  //     if (_calsyncGoogleOAuth.getCurrentUser != null) {
-  //       if (kDebugMode) {
-  //         print("Not signed in");
-  //       }
-  //       _calsyncGoogleOAuth.getCalendars();
-  //     }
-  //   });
-  //   _calsyncGoogleOAuth.googleSignIn.signInSilently();
-  //   // getCalendars();
-  // }
 
   Future<void> handleSignIn() async {
     try {
@@ -82,8 +66,6 @@ class _CalsyncAuthState extends State<CalsyncAuth> {
       });
     } catch (error) {
       print(error); // ignore: avoid_print
-    } finally {
-      getCalendars(); //
     }
   }
 
@@ -134,23 +116,24 @@ class _CalsyncAuthState extends State<CalsyncAuth> {
     // Start with the simpler items
     var it = _calendarList.items?.iterator;
     var e_it = eventsList.items?.iterator;
-    if (it != null) {
-      while (it.moveNext()) {
-        if (kDebugMode) {
-          print(it.current.summary);
-        }
-        setState(() {
-          var newItem = Text(it.current.summary as String);
-          it.current.id;
-          if (e_it != null) {
-            while (e_it.moveNext()) {
-              print(e_it.current.summary);
-            }
+    // if (it != null) {
+    //   while (it.moveNext()) {
+    //     if (kDebugMode) {
+    //       print(it.current.summary);
+    //     }
+    setState(() {
+      if (e_it != null) {
+        while (e_it.moveNext()) {
+          if (e_it.current.summary == null) {
+            continue;
           }
+          var newItem = Text(e_it.current.summary as String);
+          print(e_it.current.summary);
           calendarItems.add(newItem);
-        });
+        }
       }
-    }
+    });
+
     return calendarItems;
   }
 
