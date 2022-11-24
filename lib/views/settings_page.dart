@@ -19,7 +19,7 @@ class _SettingsPageState extends State<SettingsPage> {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CalsyncAuth(),
+          // CalsyncAuth(),
           Settings(),
         ],
       ),

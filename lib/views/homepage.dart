@@ -30,8 +30,8 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
   }
 
   final routes = [
-    SchedulePage(),
-    DayPage(),
+    // SchedulePage(),
+    // DayPage(),
     MonthPage(),
     SettingsPage(),
   ];
@@ -44,30 +44,30 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
         title: Text(widget.title),
       ),
       bottomNavigationBar: BottomAppBar(
-        notchMargin: 5,
+        notchMargin: 3,
         child: Row(
           //children inside bottom appbar
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            NavItem(
-              icon: Icons.schedule_rounded,
-              routeIndex: 0,
-              btnLabel: "Schedule",
-            ),
-            NavItem(
-              icon: Icons.calendar_view_day_rounded,
-              routeIndex: 1,
-              btnLabel: "Day",
-            ),
+            // NavItem(
+            //   icon: Icons.schedule_rounded,
+            //   routeIndex: 0,
+            //   btnLabel: "Schedule",
+            // ),
+            // NavItem(
+            //   icon: Icons.calendar_view_day_rounded,
+            //   routeIndex: 1,
+            //   btnLabel: "Day",
+            // ),
             NavItem(
               icon: Icons.calendar_month_rounded,
-              routeIndex: 2,
+              routeIndex: 0,
               btnLabel: "Month",
             ),
             NavItem(
                 icon: Icons.settings_rounded,
-                routeIndex: 3,
+                routeIndex: 1,
                 btnLabel: "Settings"),
           ],
         ),
