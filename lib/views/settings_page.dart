@@ -1,3 +1,4 @@
+import 'package:calendar_sync/views/day_page.dart';
 import 'package:flutter/material.dart';
 
 import '../auth/calsync_auth.dart';
@@ -20,6 +21,12 @@ class _SettingsPageState extends State<SettingsPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           // CalsyncAuth(),
+          ElevatedButton(
+            onPressed: () {
+              DayPage();
+            },
+            child: const Text("Sync"),
+          ),
           Settings(),
         ],
       ),

@@ -51,8 +51,7 @@ class _DayPageState extends State<DayPage> {
             ),
           );
         } else {
-          return Container(
-              child: Center(child: Text("Could not load gCal Evetns")));
+          return const SnackBar(content: Text("Could not load gCal Events"));
         }
       },
     );
