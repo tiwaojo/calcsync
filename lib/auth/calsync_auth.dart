@@ -56,27 +56,6 @@ class _CalsyncAuthState extends State<CalsyncAuth> {
 
     final gCalAPI = CalendarApi(client!);
     _calendarList = await gCalAPI.calendarList.list();
-    // var it = _calendarList.items?.iterator;
-    //     // if (it != null) {
-    //     //   while (it.moveNext()) {
-    //     //     if (kDebugMode) {
-    //     //       print("Summary of calendar: ${it.current.summary}");
-    //     //     }
-    //     //   }
-    // }
-    // eventsList = await gCalAPI.events
-    //     .list(maxResults: 5, orderBy: "startTime", alwaysIncludeEmail: true);
-    // setState(() {
-    //   var it = _calendarList.items?.iterator;
-    //     while (it!.moveNext()) {
-    //       if (kDebugMode) {
-    //         print(it.current.summary);
-    //         // Text(it.current.summary as String);
-    //         // calList = calendarList as String;
-    //         // print(calList);
-    //       }
-    //     }
-    // });
   }
 
   // void changeUser() {
@@ -154,7 +133,7 @@ class _CalsyncAuthState extends State<CalsyncAuth> {
     List<Text> calendarItems = [];
     // Start with the simpler items
     var it = _calendarList.items?.iterator;
-    // var e_it = eventsList.items?.iterator;
+    var e_it = eventsList.items?.iterator;
     if (it != null) {
       while (it.moveNext()) {
         if (kDebugMode) {
@@ -162,12 +141,12 @@ class _CalsyncAuthState extends State<CalsyncAuth> {
         }
         setState(() {
           var newItem = Text(it.current.summary as String);
-          // it.current.id;
-          // if (e_it != null) {
-          //   while (e_it.moveNext()) {
-          //     print(e_it.current.summary);
-          //   }
-          // }
+          it.current.id;
+          if (e_it != null) {
+            while (e_it.moveNext()) {
+              print(e_it.current.summary);
+            }
+          }
           calendarItems.add(newItem);
         });
       }
