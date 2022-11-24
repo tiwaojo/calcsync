@@ -1,9 +1,14 @@
+import 'package:calendar_sync/models/event.dart' as events;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:provider/provider.dart';
 
 import '../db/firestore_crud.dart';
+import '../db/sqlite.dart';
+import '../edit_events.dart';
+import '../models/auth.dart';
 
 /// The hove page which hosts the calendar
 class MonthView extends StatefulWidget {
@@ -18,51 +23,82 @@ class MonthView extends StatefulWidget {
 class _MonthViewState extends State<MonthView> {
   @override
   Widget build(BuildContext context) {
-    final Stream<QuerySnapshot> collectionReference =
-        FirestoreCrud.readEvents("wasd@wasd.com");
     final DateTime today = DateTime.now();
-    return Scaffold(
-        body: StreamBuilder(
-      stream: collectionReference,
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        List<Event> meetings = <Event>[];
-        DateTime from = DateTime(today.year, today.month, today.day, 9);
-        DateTime to = from.add(const Duration(hours: 2));
-        bool isAllDay = false;
-        String name = "Null";
-        String id = "Null";
-        if (snapshot.hasData) {
-          snapshot.data!.docs.map((DocumentSnapshot documentSnapshot) {
-            Map<String, dynamic> data =
-                documentSnapshot.data()! as Map<String, dynamic>;
-            from = data['from'].toDate();
-            to = data['to'].toDate();
-            isAllDay = data['isAllDay'];
-            name = data['name'];
-            id = documentSnapshot.id;
-            meetings.add(
-                Event(name, from, to, const Color(0xFF0F8644), isAllDay, id));
-          }).toList();
-        }
+    return Consumer<CalsyncGoogleOAuth>(
+        builder: (BuildContext context, notifier, child) {
+      String email = "";
+      if (notifier.currentUser != null) {
+        email = notifier.currentUser?.email as String;
+      }
+      final Stream<QuerySnapshot> collectionReference =
+          FirestoreCrud.readEvents(email);
+      return Scaffold(
+          body: StreamBuilder(
+        stream: collectionReference,
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          List<Event> meetings = <Event>[];
+          DateTime from = DateTime(today.year, today.month, today.day, 9);
+          DateTime to = from.add(const Duration(hours: 2));
+          bool isAllDay = false;
+          String name = "Null";
+          String id = "Null";
+          String description = "Null";
+          if (snapshot.hasData) {
+            snapshot.data!.docs.map((DocumentSnapshot documentSnapshot) {
+              Map<String, dynamic> data =
+                  documentSnapshot.data()! as Map<String, dynamic>;
+              from = data['from'].toDate();
+              to = data['to'].toDate();
+              isAllDay = data['isAllDay'];
+              name = data['name'];
+              id = documentSnapshot.id;
+              description = data['description'];
+              meetings.add(Event(name, from, to, const Color(0xFF0F8644),
+                  isAllDay, id, description, "firebase"));
+            }).toList();
+          }
 
-        return SfCalendar(
-          view: CalendarView.month,
-          dataSource: EventDataSource(meetings),
-          allowedViews: const [
-            CalendarView.day,
-            CalendarView.week,
-            CalendarView.month
-          ],
-          // by default the month appointment display mode set as Indicator, we can
-          // change the display mode as appointment using the appointment display
-          // mode property
-          monthViewSettings: const MonthViewSettings(
-              appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
-              showAgenda: true),
-          onTap: calendarTapped,
-        );
-      },
-    ));
+          Future<List<events.Event>> eventsList =
+              EventsDatabase.instance.getItems();
+          eventsList.then((eventsList) {
+            Iterable<events.Event> iterableEventsList = eventsList;
+            for (events.Event value in iterableEventsList) {
+              String valueName = value.name ?? "";
+              DateTime valueFrom = value.from ?? today;
+              DateTime valueTo = value.to ?? today;
+              String valueId = value.id ?? "";
+              String valueDescription = value.description ?? "";
+              meetings.add(Event(
+                  valueName,
+                  valueFrom,
+                  valueTo,
+                  const Color(0xFF0F8644),
+                  false,
+                  valueId,
+                  valueDescription,
+                  "local"));
+            }
+          });
+
+          return SfCalendar(
+            view: CalendarView.month,
+            dataSource: EventDataSource(meetings),
+            allowedViews: const [
+              CalendarView.day,
+              CalendarView.week,
+              CalendarView.month
+            ],
+            // by default the month appointment display mode set as Indicator, we can
+            // change the display mode as appointment using the appointment display
+            // mode property
+            monthViewSettings: const MonthViewSettings(
+                appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
+                showAgenda: true),
+            onTap: calendarTapped,
+          );
+        },
+      ));
+    });
   }
 
   void calendarTapped(CalendarTapDetails details) {
@@ -72,6 +108,7 @@ class _MonthViewState extends State<MonthView> {
       String timeDetails;
       String subjectText = appointmentDetails.eventName;
       String id = appointmentDetails.id;
+      String descriptionText = appointmentDetails.description;
       String dateText = DateFormat('MMMM dd, yyyy')
           .format(appointmentDetails.from)
           .toString();
@@ -93,6 +130,17 @@ class _MonthViewState extends State<MonthView> {
                 height: 80,
                 child: Column(
                   children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Text(
+                          descriptionText,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 20,
+                          ),
+                        ),
+                      ],
+                    ),
                     Row(
                       children: <Widget>[
                         Text(
@@ -128,11 +176,24 @@ class _MonthViewState extends State<MonthView> {
                 TextButton(
                     onPressed: () {
                       print("Edit Button Pressed: $id");
+                      EditEvent(
+                          id: id,
+                          description: appointmentDetails.description,
+                          name: appointmentDetails.eventName,
+                          from: appointmentDetails.from,
+                          to: appointmentDetails.to,
+                          source: appointmentDetails.source);
                     },
                     child: const Text('Edit')),
                 TextButton(
                     onPressed: () {
-                      print("Edit Button Pressed");
+                      print("Delete Button Pressed: $id");
+                      if (appointmentDetails.source == "firebase") {
+                        FirestoreCrud.deleteEvent(id: id);
+                      }
+                      if (appointmentDetails.source == "local") {
+                        EventsDatabase.instance.deleteItem(id);
+                      }
                     },
                     child: const Text('Delete')),
               ],
@@ -185,11 +246,13 @@ class EventDataSource extends CalendarDataSource {
 
 class Event {
   Event(this.eventName, this.from, this.to, this.background, this.isAllDay,
-      this.id);
+      this.id, this.description, this.source);
 
   String id;
 
   String eventName;
+
+  String description;
 
   DateTime from;
 
@@ -198,4 +261,6 @@ class Event {
   Color background;
 
   bool isAllDay;
+
+  String source;
 }
