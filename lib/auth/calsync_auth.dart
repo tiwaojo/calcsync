@@ -25,9 +25,6 @@ class _CalsyncAuthState extends State<CalsyncAuth> {
   String userDetails = "user";
   late final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: <String>[CalendarApi.calendarScope],
-    serverClientId: Platform.isAndroid
-        ? "209176434525-7c14rp97kdg9r5s5l0q48i9q0u9bieh1.apps.googleusercontent.com"
-        : "209176434525-jvffc44tf0qjocbrbjrmbib4mcdaipf0.apps.googleusercontent.com", // getClientId(),
   ); // initialize at runtime
 
   @override
@@ -38,7 +35,7 @@ class _CalsyncAuthState extends State<CalsyncAuth> {
     signIn();
   }
 
-  void signIn() {
+  Future<void> signIn() async {
     _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
       setState(() {
         _currentUser = account;
@@ -47,7 +44,7 @@ class _CalsyncAuthState extends State<CalsyncAuth> {
         }
       });
     });
-    _googleSignIn.signInSilently();
+    await _googleSignIn.signInSilently();
   }
 
   Future<void> getCalendars() async {

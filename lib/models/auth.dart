@@ -10,21 +10,18 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/calendar/v3.dart';
 import 'package:googleapis_auth/googleapis_auth.dart' as auth show AuthClient;
 
-class CalsyncGoogleOAuth {
+class CalsyncGoogleOAuth extends ChangeNotifier {
   // Resource used: https://pub.dev/packages/extension_google_sign_in_as_googleapis_auth
   // flutter.dev/go/google-apis
   // https://youtu.be/z4MsuZiEezY
   // https://youtu.be/E5WgU6ERZzA
 
   // CalsyncGoogleOAuth._(); //private constructor
-  GoogleSignInAccount? _currentUser;
-  Events eventsList = Events();
-  CalendarList _calendarList = CalendarList();
-  late final GoogleSignIn googleSignIn = GoogleSignIn(
+  GoogleSignInAccount? currentUser;
+  static Events eventsList = Events();
+  static CalendarList _calendarList = CalendarList();
+  GoogleSignIn googleSignIn = GoogleSignIn(
     scopes: <String>[CalendarApi.calendarScope],
-    serverClientId: Platform.isAndroid
-        ? "209176434525-7c14rp97kdg9r5s5l0q48i9q0u9bieh1.apps.googleusercontent.com"
-        : "209176434525-jvffc44tf0qjocbrbjrmbib4mcdaipf0.apps.googleusercontent.com", // getClientId(),
   ); // initialize at runtime;
 
   CalsyncGoogleOAuth() {
@@ -42,23 +39,30 @@ class CalsyncGoogleOAuth {
     return clientId["client_id"];
   }
 
-  set currentUser(GoogleSignInAccount value) {
-    _currentUser = value; // Set Current User Signin
-  }
+  // set currentUser(GoogleSignInAccount value) {
+  //   _currentUser = value; // Set Current User Signin
+  // }
 
   GoogleSignInAccount? get getCurrentUser =>
-      _currentUser; // Get Current User Signin
+      currentUser; // Get Current User Signin
+  notifyListeners();
 
-  void signIn() {
+  void signIn() async {
     // _getClientId().then((value) => print(value));
     googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
       // setState(() {
-      _currentUser = account;
-      _currentUser ?? getCalendars();
+      currentUser = account;
+      // _currentUser ?? getCalendars();
 
+      if (currentUser != null) {
+        getCalendars();
+      }
       // });
     }); // https://youtu.be/Q00Foa8CiDk
     googleSignIn.signInSilently();
+    if (await googleSignIn.isSignedIn()) {
+      notifyListeners();
+    }
   }
 
   // void changeUser() {
@@ -78,6 +82,10 @@ class CalsyncGoogleOAuth {
   //   // getCalendars();
   // }
 
+  Events getEvents() {
+    return eventsList;
+  }
+
   Future<void> getCalendars() async {
     // Retrieve an [auth.AuthClient] from the current [GoogleSignIn] instance.
     final auth.AuthClient? client = await googleSignIn
@@ -93,12 +101,12 @@ class CalsyncGoogleOAuth {
   Future<void> handleSignIn() async {
     try {
       await googleSignIn.signIn().then((value) {
-        _currentUser = value;
+        currentUser = value;
       });
     } catch (error) {
       print(error); // ignore: avoid_print
     }
   }
 
-  Future handleSignOut() => googleSignIn.disconnect();
+  Future<void> handleSignOut() async => await googleSignIn.disconnect();
 }

@@ -53,6 +53,7 @@ dependencies:
   ionicons: ^0.2.1
   material: ^1.0.0+2
   curved_navigation_bar: ^1.0.3
+  smooth_page_indicator: ^1.0.0+2
 
 dev_dependencies:
   flutter_test:
