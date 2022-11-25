@@ -25,7 +25,7 @@ class EventsDatabase {
       version: 1,
       onCreate: (database, version) async {
         await database.execute(
-          "CREATE TABLE IF NOT EXISTS events(id TEXT PRIMARY KEY, description TEXT NOT NULL, name TEXT NOT NULL, email TEXT NOT NULL, from TEXT NOT NULL, to TEXT NOT NULL)",
+          "CREATE TABLE IF NOT EXISTS events(id TEXT PRIMARY KEY, description TEXT NOT NULL, name TEXT NOT NULL, email TEXT NOT NULL, start TEXT NOT NULL, end TEXT NOT NULL)",
         );
       },
     );

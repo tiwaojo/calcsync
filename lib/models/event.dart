@@ -19,8 +19,8 @@ class Event {
         description = item["description"],
         name = item["name"],
         email = item["email"],
-        from = DateTime.parse(item["from"]),
-        to = DateTime.parse(item["from"]);
+        from = DateTime.parse(item["start"]),
+        to = DateTime.parse(item["end"]);
 
   Map<String, dynamic> toMap() {
     return {
@@ -28,8 +28,8 @@ class Event {
       'description': description,
       'name': name,
       'email': email,
-      'from': from.toString(),
-      'to': to.toString()
+      'start': from.toString(),
+      'end': to.toString()
     };
   }
 }
