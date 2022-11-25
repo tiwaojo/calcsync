@@ -19,7 +19,6 @@ class _DayPageState extends State<DayPage> {
   Widget build(BuildContext context) {
     // final cal = Provider.of<CalsyncGoogleOAuth>(context);
     // return Text(cal.getCurrentUser?.email as String);
-    print("Day Page");
     return Consumer<CalsyncGoogleOAuth>(
       builder: (BuildContext context, notifier, child) {
         String? email = notifier.getCurrentUser?.email;
@@ -36,9 +35,10 @@ class _DayPageState extends State<DayPage> {
                     // context  is context of position of widget in widget tree
                     // ListView.Builder only renders items that are within view
                     Event gCalEvent = gCalEvents[index];
-
                     String title = gCalEvent.summary.toString();
                     String subtitle = gCalEvent.start.toString();
+                    String description = "";
+                    description = gCalEvent.description ?? "";
                     EventsDatabase.instance.createItem(events.Event(
                         id: gCalEvent.id,
                         from: gCalEvent.start?.dateTime,
