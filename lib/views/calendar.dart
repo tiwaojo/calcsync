@@ -21,7 +21,6 @@ class MonthView extends StatefulWidget {
 }
 
 class _MonthViewState extends State<MonthView> {
-  List<Event> meetings = <Event>[];
   @override
   Widget build(BuildContext context) {
     final DateTime today = DateTime.now();
@@ -31,19 +30,20 @@ class _MonthViewState extends State<MonthView> {
       if (notifier.currentUser != null) {
         email = notifier.currentUser?.email as String;
       }
+      refreshMeetings(email);
       final Stream<QuerySnapshot> collectionReference =
           FirestoreCrud.readEvents(email);
       return Scaffold(
           body: StreamBuilder(
         stream: collectionReference,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          List<Event> meetings = <Event>[];
           DateTime from = DateTime(today.year, today.month, today.day, 9);
           DateTime to = from.add(const Duration(hours: 2));
           bool isAllDay = false;
           String name = "Null";
           String id = "Null";
           String description = "Null";
-
           if (snapshot.hasData) {
             snapshot.data!.docs.map((DocumentSnapshot documentSnapshot) {
               Map<String, dynamic> data =
@@ -58,7 +58,7 @@ class _MonthViewState extends State<MonthView> {
                   isAllDay, id, description, "firebase"));
             }).toList();
           }
-          // print(meetings.length.toString());
+
           return SfCalendar(
             view: CalendarView.month,
             dataSource: EventDataSource(meetings),
@@ -80,8 +80,7 @@ class _MonthViewState extends State<MonthView> {
     });
   }
 
-  Future<List<Event>> refreshMeetings() async {
-    List<Event> meetings = <Event>[];
+  Future<void> refreshMeetings(String email) async {
     final DateTime today = DateTime.now();
     DateTime from = DateTime(today.year, today.month, today.day, 9);
     DateTime to = from.add(const Duration(hours: 2));
@@ -95,10 +94,15 @@ class _MonthViewState extends State<MonthView> {
       DateTime valueTo = value.to ?? to;
       String valueId = value.id ?? id;
       String valueDescription = value.description ?? description;
-      meetings.add(Event(valueName, valueFrom, valueTo, const Color(0xFF0F8644),
-          false, valueId, valueDescription, "local"));
+      FirestoreCrud.addIfNotExistsEvent(
+          id: valueId,
+          to: valueTo,
+          from: valueFrom,
+          isAllDay: false,
+          name: valueName,
+          description: valueDescription,
+          email: email);
     }
-    return meetings;
   }
 
   void calendarTapped(CalendarTapDetails details) {
