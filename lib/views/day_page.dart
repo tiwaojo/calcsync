@@ -37,14 +37,13 @@ class _DayPageState extends State<DayPage> {
                     Event gCalEvent = gCalEvents[index];
                     String title = gCalEvent.summary.toString();
                     String subtitle = gCalEvent.start.toString();
-                    String description = "";
-                    description = gCalEvent.description ?? "";
+                    String description = gCalEvent.description.toString();
                     EventsDatabase.instance.createItem(events.Event(
                         id: gCalEvent.id,
                         from: gCalEvent.start?.dateTime,
                         to: gCalEvent.end?.dateTime,
                         name: title,
-                        description: gCalEvent.description,
+                        description: description,
                         email: email));
                     print(events.Event);
                     return ListTile(
