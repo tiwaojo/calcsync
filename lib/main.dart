@@ -139,6 +139,7 @@ class _SignInPageState extends State<SignInPage> {
       }
       return Container(
         child: Center(
+          /*ADD A TITLE*/
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -165,7 +166,7 @@ class _SignInPageState extends State<SignInPage> {
                 },
                 child: Text("Continue"),
               ),
-              Text("${text} is signed in"),
+              Text("${text} is signed in"), /*FORMAT THIS*/
             ],
           ),
         ),

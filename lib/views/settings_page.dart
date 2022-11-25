@@ -1,3 +1,4 @@
+import 'package:calendar_sync/views/day_page.dart';
 import 'package:flutter/material.dart';
 
 import '../auth/calsync_auth.dart';
@@ -11,6 +12,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  bool dispPage = false;
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -19,7 +21,17 @@ class _SettingsPageState extends State<SettingsPage> {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CalsyncAuth(),
+          // CalsyncAuth(),
+          ElevatedButton(
+            onPressed: () {
+              dispPage = true;
+              setState(() {
+                print("Render Page: $dispPage");
+              });
+            },
+            child: const Text("Sync"),
+          ),
+          dispPage ? DayPage() : Text("Could not display day page"),
           Settings(),
         ],
       ),

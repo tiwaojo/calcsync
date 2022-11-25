@@ -32,7 +32,7 @@ class CalsyncGoogleOAuth extends ChangeNotifier {
 // TODO: To complete the usage of internet resources project requirement
   Future<String> _getClientId() async {
     final response = await rootBundle
-        .loadString('assets/client_secret.json'); // load client_secret.json
+        .loadString('assets/client_secret-Web.json'); // load client_secret.json
     Map<String, dynamic> clientId =
         jsonDecode(response); // Get the client id from json object
     // print(clientId);
