@@ -26,29 +26,30 @@ class _DayPageState extends State<DayPage> {
         print(notifier.getEvents().toJson().values);
         List<Event>? gCalEvents = notifier.getEvents().items;
         if (gCalEvents != null) {
-          return Container(
-            child: Center(
-              child: ListView.builder(
-                  itemCount: gCalEvents.length,
-                  itemBuilder: (context, index) {
-                    // context  is context of position of widget in widget tree
-                    // ListView.Builder only renders items that are within view
-                    Event gCalEvent = gCalEvents[index];
-                    String? title = gCalEvent.summary;
-                    String subtitle = gCalEvent.start.toString();
-                    EventsDatabase.instance.createItem(events.Event(
-                        id: gCalEvent.id,
-                        from: gCalEvent.start?.dateTime,
-                        to: gCalEvent.end?.dateTime,
-                        name: title,
-                        description: gCalEvent.description,
-                        email: email));
-                    return ListTile(
-                      title: Text(title!),
-                      subtitle: Text("Event starts: $subtitle"),
-                    );
-                  }),
-            ),
+          return Center(
+            child: ListView.builder(
+                itemCount: gCalEvents.length,
+                itemBuilder: (context, index) {
+                  // context  is context of position of widget in widget tree
+                  // ListView.Builder only renders items that are within view
+                  Event gCalEvent = gCalEvents[index];
+                  String? title = "";
+                  title = gCalEvent.summary ?? "";
+                  String subtitle = gCalEvent.start.toString();
+                  String description = "";
+                  description = gCalEvent.description ?? "";
+                  EventsDatabase.instance.createItem(events.Event(
+                      id: gCalEvent.id,
+                      from: gCalEvent.start?.dateTime,
+                      to: gCalEvent.end?.dateTime,
+                      name: title,
+                      description: description,
+                      email: email));
+                  return ListTile(
+                    title: Text(title!),
+                    subtitle: Text("Event starts: $subtitle"),
+                  );
+                }),
           );
         } else {
           return const SnackBar(content: Text("Could not load gCal Events"));
