@@ -36,6 +36,38 @@ class FirestoreCrud {
     return response;
   }
 
+  static Future<Response> addIfNotExistsEvent({
+    required String id,
+    required DateTime to,
+    required DateTime from,
+    required bool isAllDay,
+    required String name,
+    required String description,
+    required String email,
+  }) async {
+    Response response = Response();
+    DocumentReference documentReferencer = _collection.doc(id);
+
+    Map<String, dynamic> data = <String, dynamic>{
+      "to": to,
+      "from": from,
+      "isAllDay": isAllDay,
+      "name": name,
+      "description": description,
+      "email": email
+    };
+
+    var result = await documentReferencer.set(data).whenComplete(() {
+      response.code = 200;
+      response.message = "Successfully added to the database";
+    }).catchError((e) {
+      response.code = 500;
+      response.message = e;
+    });
+
+    return response;
+  }
+
   static Stream<QuerySnapshot> readEvents(String email) {
     CollectionReference notesItemCollection = _collection;
 
