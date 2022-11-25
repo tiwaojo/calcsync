@@ -21,6 +21,7 @@ class MonthView extends StatefulWidget {
 }
 
 class _MonthViewState extends State<MonthView> {
+  List<Event> meetings = <Event>[];
   @override
   Widget build(BuildContext context) {
     final DateTime today = DateTime.now();
@@ -36,13 +37,13 @@ class _MonthViewState extends State<MonthView> {
           body: StreamBuilder(
         stream: collectionReference,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          List<Event> meetings = <Event>[];
           DateTime from = DateTime(today.year, today.month, today.day, 9);
           DateTime to = from.add(const Duration(hours: 2));
           bool isAllDay = false;
           String name = "Null";
           String id = "Null";
           String description = "Null";
+
           if (snapshot.hasData) {
             snapshot.data!.docs.map((DocumentSnapshot documentSnapshot) {
               Map<String, dynamic> data =
@@ -57,29 +58,7 @@ class _MonthViewState extends State<MonthView> {
                   isAllDay, id, description, "firebase"));
             }).toList();
           }
-
-          Future<List<events.Event>> eventsList =
-              EventsDatabase.instance.getItems();
-          eventsList.then((eventsList) {
-            Iterable<events.Event> iterableEventsList = eventsList;
-            for (events.Event value in iterableEventsList) {
-              String valueName = value.name ?? "";
-              DateTime valueFrom = value.from ?? today;
-              DateTime valueTo = value.to ?? today;
-              String valueId = value.id ?? "";
-              String valueDescription = value.description ?? "";
-              meetings.add(Event(
-                  valueName,
-                  valueFrom,
-                  valueTo,
-                  const Color(0xFF0F8644),
-                  false,
-                  valueId,
-                  valueDescription,
-                  "local"));
-            }
-          });
-
+          // print(meetings.length.toString());
           return SfCalendar(
             view: CalendarView.month,
             dataSource: EventDataSource(meetings),
@@ -99,6 +78,27 @@ class _MonthViewState extends State<MonthView> {
         },
       ));
     });
+  }
+
+  Future<List<Event>> refreshMeetings() async {
+    List<Event> meetings = <Event>[];
+    final DateTime today = DateTime.now();
+    DateTime from = DateTime(today.year, today.month, today.day, 9);
+    DateTime to = from.add(const Duration(hours: 2));
+    String name = "Null";
+    String id = "Null";
+    String description = "Null";
+    var eventsList = await EventsDatabase.instance.getItems();
+    for (events.Event value in eventsList) {
+      String valueName = value.name ?? name;
+      DateTime valueFrom = value.from ?? from;
+      DateTime valueTo = value.to ?? to;
+      String valueId = value.id ?? id;
+      String valueDescription = value.description ?? description;
+      meetings.add(Event(valueName, valueFrom, valueTo, const Color(0xFF0F8644),
+          false, valueId, valueDescription, "local"));
+    }
+    return meetings;
   }
 
   void calendarTapped(CalendarTapDetails details) {
@@ -222,6 +222,7 @@ class _MonthViewState extends State<MonthView> {
 
 class EventDataSource extends CalendarDataSource {
   EventDataSource(List<Event> source) {
+    print("FINAL:${source.length}");
     appointments = source;
   }
 

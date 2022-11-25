@@ -21,9 +21,8 @@ class CalsyncGoogleOAuth extends ChangeNotifier {
   static Events eventsList = Events();
   static CalendarList _calendarList = CalendarList();
   GoogleSignIn googleSignIn = GoogleSignIn(
-      scopes: <String>[CalendarApi.calendarScope],
-      serverClientId:
-          "209176434525-7c14rp97kdg9r5s5l0q48i9q0u9bieh1.apps.googleusercontent.com"); // initialize at runtime;
+    scopes: <String>[CalendarApi.calendarScope],
+  ); // initialize at runtime;
 
   CalsyncGoogleOAuth() {
     // _getClientId().then((value) => print(value));
