@@ -44,7 +44,7 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
         title: Text(widget.title),
       ),
       bottomNavigationBar: BottomAppBar(
-        notchMargin: 3,
+        notchMargin: 5,
         child: Row(
           //children inside bottom appbar
           mainAxisSize: MainAxisSize.max,

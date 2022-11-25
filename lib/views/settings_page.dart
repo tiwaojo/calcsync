@@ -12,6 +12,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  bool dispPage = false;
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -23,10 +24,14 @@ class _SettingsPageState extends State<SettingsPage> {
           // CalsyncAuth(),
           ElevatedButton(
             onPressed: () {
-              DayPage();
+              dispPage = true;
+              setState(() {
+                print("Render Page: $dispPage");
+              });
             },
             child: const Text("Sync"),
           ),
+          dispPage ? DayPage() : Text("Could not display day page"),
           Settings(),
         ],
       ),

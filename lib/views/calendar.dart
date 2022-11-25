@@ -2,8 +2,8 @@ import 'package:calendar_sync/models/event.dart' as events;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../db/firestore_crud.dart';
 import '../db/sqlite.dart';
@@ -176,13 +176,30 @@ class _MonthViewState extends State<MonthView> {
                 TextButton(
                     onPressed: () {
                       print("Edit Button Pressed: $id");
-                      EditEvent(
-                          id: id,
-                          description: appointmentDetails.description,
-                          name: appointmentDetails.eventName,
-                          from: appointmentDetails.from,
-                          to: appointmentDetails.to,
-                          source: appointmentDetails.source);
+
+                      setState(() {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return SingleChildScrollView(
+                                child: EditEvent(
+                                    id: id,
+                                    description: appointmentDetails.description,
+                                    name: appointmentDetails.eventName,
+                                    from: appointmentDetails.from,
+                                    to: appointmentDetails.to,
+                                    source: appointmentDetails.source),
+                                //child: Text("Hola"),
+                              );
+                            },
+                            backgroundColor: Theme.of(context).disabledColor,
+                            enableDrag: true,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(25.0),
+                              ),
+                            ));
+                      });
                     },
                     child: const Text('Edit')),
                 TextButton(
