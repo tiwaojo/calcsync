@@ -22,6 +22,7 @@ class CalsyncGoogleOAuth extends ChangeNotifier {
   static CalendarList _calendarList = CalendarList();
   GoogleSignIn googleSignIn = GoogleSignIn(
     scopes: <String>[CalendarApi.calendarScope],
+    // serverClientId: getClientId().toString()
   ); // initialize at runtime;
 
   CalsyncGoogleOAuth() {
@@ -30,25 +31,24 @@ class CalsyncGoogleOAuth extends ChangeNotifier {
   }
 
 // TODO: To complete the usage of internet resources project requirement
-  Future<String> _getClientId() async {
+  Future<String> getClientId() async {
     final response = await rootBundle
         .loadString('assets/client_secret-Web.json'); // load client_secret.json
-    Map<String, dynamic> clientId =
+    Map<String, dynamic> platform =
         jsonDecode(response); // Get the client id from json object
-    // print(clientId);
-    return clientId["client_id"];
-  }
 
-  // set currentUser(GoogleSignInAccount value) {
-  //   _currentUser = value; // Set Current User Signin
-  // }
+    final clientId = platform["web"];
+    // print(clientId);
+    return clientId['client_id'];
+  }
 
   GoogleSignInAccount? get getCurrentUser =>
       currentUser; // Get Current User Signin
   notifyListeners();
 
   void signIn() async {
-    // _getClientId().then((value) => print(value));
+    // googleSignIn.serverClientId = _getClientId().toString;
+    // _getClientId().then((value) => clientId=value);
     googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
       // setState(() {
       currentUser = account;
