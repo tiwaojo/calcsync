@@ -17,7 +17,7 @@ class CalsyncGoogleOAuth extends ChangeNotifier {
   // https://youtu.be/E5WgU6ERZzA
 
   // CalsyncGoogleOAuth._(); //private constructor
-  GoogleSignInAccount? currentUser;
+  GoogleSignInAccount? _currentUser;
   static Events eventsList = Events();
   static CalendarList _calendarList = CalendarList();
   GoogleSignIn googleSignIn = GoogleSignIn(
@@ -43,7 +43,7 @@ class CalsyncGoogleOAuth extends ChangeNotifier {
   }
 
   GoogleSignInAccount? get getCurrentUser =>
-      currentUser; // Get Current User Signin
+      _currentUser; // Get Current User Signin
   notifyListeners();
 
   void signIn() async {
@@ -51,10 +51,10 @@ class CalsyncGoogleOAuth extends ChangeNotifier {
     // _getClientId().then((value) => clientId=value);
     googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
       // setState(() {
-      currentUser = account;
+      _currentUser = account;
       // _currentUser ?? getCalendars();
 
-      if (currentUser != null) {
+      if (_currentUser != null) {
         getCalendars();
       }
       // });
@@ -103,7 +103,7 @@ class CalsyncGoogleOAuth extends ChangeNotifier {
   Future<void> handleSignIn() async {
     try {
       await googleSignIn.signIn().then((value) {
-        currentUser = value;
+        _currentUser = value;
       });
     } catch (error) {
       print(error); // ignore: avoid_print

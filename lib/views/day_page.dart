@@ -1,6 +1,7 @@
 import 'package:calendar_sync/db/sqlite.dart';
 import 'package:calendar_sync/models/event.dart' as events;
 import 'package:calendar_sync/models/auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:googleapis/calendar/v3.dart';
 import 'package:googleapis/cloudsearch/v1.dart';
@@ -15,10 +16,10 @@ class DayPage extends StatefulWidget {
 }
 
 class _DayPageState extends State<DayPage> {
+  late ScrollController listScrollController;
+
   @override
   Widget build(BuildContext context) {
-    // final cal = Provider.of<CalsyncGoogleOAuth>(context);
-    // return Text(cal.getCurrentUser?.email as String);
     return Consumer<CalsyncGoogleOAuth>(
       builder: (BuildContext context, notifier, child) {
         String? email = notifier.getCurrentUser?.email;
@@ -30,6 +31,14 @@ class _DayPageState extends State<DayPage> {
             height: 500,
             child: Center(
               child: ListView.builder(
+                  //auto keep alive is false to prevent children from keeping their state
+                  addAutomaticKeepAlives: false,
+                  dragStartBehavior: DragStartBehavior.start,
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
+                  physics: BouncingScrollPhysics(),
+                  cacheExtent: 3,
+                  controller: listScrollController,
                   itemCount: gCalEvents.length,
                   itemBuilder: (context, index) {
                     // context  is context of position of widget in widget tree

@@ -1,5 +1,6 @@
 import 'package:calendar_sync/models/event.dart' as events;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -22,14 +23,16 @@ class MonthView extends StatefulWidget {
 
 class _MonthViewState extends State<MonthView> {
   List<Event> meetings = <Event>[];
+  bool modalOpen = false;
+
   @override
   Widget build(BuildContext context) {
     final DateTime today = DateTime.now();
     return Consumer<CalsyncGoogleOAuth>(
         builder: (BuildContext context, notifier, child) {
       String email = "";
-      if (notifier.currentUser != null) {
-        email = notifier.currentUser?.email as String;
+      if (notifier.getCurrentUser != null) {
+        email = notifier.getCurrentUser?.email as String;
       }
       final Stream<QuerySnapshot> collectionReference =
           FirestoreCrud.readEvents(email);
@@ -127,7 +130,7 @@ class _MonthViewState extends State<MonthView> {
             return AlertDialog(
               title: Text(subjectText),
               content: SizedBox(
-                height: 80,
+                height: 200,
                 child: Column(
                   children: <Widget>[
                     Row(
@@ -175,31 +178,44 @@ class _MonthViewState extends State<MonthView> {
                     child: const Text('Close')),
                 TextButton(
                     onPressed: () {
-                      print("Edit Button Pressed: $id");
-
-                      setState(() {
-                        showModalBottomSheet(
+                      if (modalOpen == false) {
+                        modalOpen = true;
+                        if (kDebugMode) {
+                          print("Edit Button Pressed: $id");
+                        }
+                        setState(() {
+                          showModalBottomSheet(
                             context: context,
                             builder: (context) {
-                              return SingleChildScrollView(
-                                child: EditEvent(
-                                    id: id,
-                                    description: appointmentDetails.description,
-                                    name: appointmentDetails.eventName,
-                                    from: appointmentDetails.from,
-                                    to: appointmentDetails.to,
-                                    source: appointmentDetails.source),
-                                //child: Text("Hola"),
+                              return Padding(
+                                padding: EdgeInsets.only(
+                                    bottom: MediaQuery.of(context)
+                                        .viewInsets
+                                        .bottom),
+                                child: SingleChildScrollView(
+                                  child: EditEvent(
+                                      id: id,
+                                      description:
+                                          appointmentDetails.description,
+                                      name: appointmentDetails.eventName,
+                                      from: appointmentDetails.from,
+                                      to: appointmentDetails.to,
+                                      source: appointmentDetails.source),
+                                  //child: Text("Hola"),
+                                ),
                               );
                             },
-                            backgroundColor: Theme.of(context).disabledColor,
+                            backgroundColor: Theme.of(context).backgroundColor,
                             enableDrag: true,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(25.0),
-                              ),
-                            ));
-                      });
+                            isScrollControlled: true,
+                            useRootNavigator: true,
+                            isDismissible: true,
+                          );
+                          if (modalOpen == true) {
+                            modalOpen = false;
+                          }
+                        });
+                      }
                     },
                     child: const Text('Edit')),
                 TextButton(
