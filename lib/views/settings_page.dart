@@ -46,7 +46,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     print(notifier.getCurrentUser);
                     notifier.handleSignOut(); // sign out user
                     print(notifier.getCurrentUser);
-                    Navigator.pop(context);
+                    Navigator.popAndPushNamed(context, '/');
                   },
                   child: Text("Signout")),
               dispPage ? DayPage() : Text("Could not display day page"),

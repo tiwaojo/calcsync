@@ -1,13 +1,8 @@
+import 'package:calendar_sync/add_events.dart';
+import 'package:calendar_sync/views/month_page.dart';
 import 'package:calendar_sync/views/settings_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
-import 'package:calendar_sync/add_events.dart';
-import 'package:calendar_sync/views/day_page.dart';
-import 'package:calendar_sync/views/month_page.dart';
-import 'package:calendar_sync/views/schedule_page.dart';
-import 'package:calendar_sync/views/settings_page.dart';
-import '../models/auth.dart';
 
 int currentIndex = 0;
 
@@ -35,6 +30,26 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
     MonthPage(),
     SettingsPage(),
   ];
+  bool modalOpen = false;
+
+  final List<Widget> aboutBoxChildren = <Widget>[
+    const SizedBox(height: 24),
+    RichText(
+      text: const TextSpan(
+        children: <TextSpan>[
+          TextSpan(
+              // style: textStyle,
+              text: "Flutter is Google's UI toolkit for building beautiful, "
+                  'natively compiled applications for mobile, web, and desktop '
+                  'from a single codebase. Learn more about Flutter at '),
+          TextSpan(
+              // style: textStyle.copyWith(color: theme.colorScheme.primary),
+              text: 'https://flutter.dev'),
+          // TextSpan(style: textStyle, text: '.'),
+        ],
+      ),
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -42,13 +57,22 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text(widget.title),
+        actions: [
+          IconButton(
+            onPressed: () {
+              // TODO
+            },
+            icon: Icon(Icons.ballot),
+          ),
+        ],
       ),
       bottomNavigationBar: BottomAppBar(
-        notchMargin: 5,
+        notchMargin: 15.0,
+        elevation: 6,
         child: Row(
           //children inside bottom appbar
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             // NavItem(
             //   icon: Icons.schedule_rounded,
@@ -78,23 +102,34 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
       floatingActionButton: FloatingActionButton(
         enableFeedback: true,
         onPressed: () {
-          setState(() {
-            showModalBottomSheet(
+          if (modalOpen == false) {
+            modalOpen = true;
+            setState(() {
+              showModalBottomSheet(
                 context: context,
                 builder: (context) {
-                  return SingleChildScrollView(
-                    child: AddEvent(),
-                    //child: Text("Hola"),
+                  return Padding(
+                    padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom),
+                    child: SingleChildScrollView(
+                      // reverse: true,
+                      child: AddEvent(),
+                    ),
                   );
                 },
                 backgroundColor: Theme.of(context).disabledColor,
                 enableDrag: true,
-                shape: const RoundedRectangleBorder(
+                shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.vertical(
                     top: Radius.circular(25.0),
                   ),
-                ));
-          });
+                ),
+              );
+              if (modalOpen == true) {
+                modalOpen = false;
+              }
+            });
+          }
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
@@ -150,24 +185,27 @@ class NavButton extends StatefulWidget {
 class _NavButtonState extends State<NavButton> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
+    return Stack(
+      alignment: Alignment.bottomCenter,
       children: [
-        IconButton(
-          icon: Icon(
-            widget.icon,
-            color: Colors.white,
+        Positioned(
+          bottom: 50,
+          child: IconButton(
+            icon: Icon(
+              widget.icon,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              setState(() {
+                currentIndex = widget.routeIndex;
+                if (kDebugMode) {
+                  print("Route Index: $currentIndex");
+                }
+              });
+            },
           ),
-          onPressed: () {
-            setState(() {
-              currentIndex = widget.routeIndex;
-              if (kDebugMode) {
-                print("Route Index: $currentIndex");
-              }
-            });
-          },
         ),
-        Text(widget.btnLabel),
+        Positioned(bottom: 50, child: Text(widget.btnLabel)),
       ],
     );
   }

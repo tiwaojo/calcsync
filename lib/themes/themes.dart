@@ -7,6 +7,8 @@ class CalsyncThemes extends ChangeNotifier {
   CalsyncThemes._(); // private constructor t prevent creating an instance
 
   static ThemeData light = ThemeData(
+    useMaterial3: true,
+    visualDensity: VisualDensity.adaptivePlatformDensity,
     textTheme: CalsyncThemesText.calsyncTextThemeL,
     inputDecorationTheme: InputDecorationTheme(
       // fillColor: Color(0xff182231),
@@ -40,6 +42,14 @@ class CalsyncThemes extends ChangeNotifier {
       shape: CircularNotchedRectangle(),
     ),
     brightness: Brightness.light,
+    bottomSheetTheme: BottomSheetThemeData(
+      backgroundColor: ThemeData.light(useMaterial3: true).disabledColor,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(25.0),
+        ),
+      ),
+    ),
     progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: Colors.amber,
         circularTrackColor: Colors.greenAccent,
@@ -48,15 +58,29 @@ class CalsyncThemes extends ChangeNotifier {
   );
 
   static ThemeData dark = ThemeData(
+    useMaterial3: true,
+    visualDensity: VisualDensity.adaptivePlatformDensity,
     textTheme: CalsyncThemesText.calsyncTextThemeD,
+    errorColor: Colors.red,
     inputDecorationTheme: InputDecorationTheme(
       // fillColor: Color(0xff182231),
       contentPadding: const EdgeInsets.only(left: 10),
       focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.pink),
-          borderRadius: BorderRadius.circular(10),
-          gapPadding: 10),
+        borderSide: const BorderSide(color: Colors.pink),
+        borderRadius: BorderRadius.circular(10),
+        gapPadding: 10,
+      ),
+      focusColor: Colors.pink,
       alignLabelWithHint: true,
+      border: InputBorder.none,
+      errorBorder: OutlineInputBorder(
+        borderSide:
+            BorderSide(color: ThemeData.dark(useMaterial3: true).errorColor),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: ThemeData.light().errorColor),
+      ),
+      errorStyle: ThemeData.dark().textTheme.bodyText2,
     ),
     timePickerTheme: const TimePickerThemeData(
       backgroundColor: Color(0xff182231),
@@ -70,7 +94,6 @@ class CalsyncThemes extends ChangeNotifier {
         color: Color(0xFFFF3366),
       ),
     ),
-
     disabledColor: const Color(0xFF233142),
     //3176c6
     scaffoldBackgroundColor: const Color(0xff182231),
@@ -83,6 +106,11 @@ class CalsyncThemes extends ChangeNotifier {
     backgroundColor: const Color(0xFF202836),
     primarySwatch: Colors.blue,
     brightness: Brightness.dark,
+    bottomAppBarTheme: BottomAppBarTheme(
+      elevation: 20.0,
+      color: ThemeData.dark().backgroundColor,
+      shape: CircularNotchedRectangle(),
+    ),
   );
 }
 

@@ -27,6 +27,7 @@ Future<void> main() async {
 
 class MyApp extends StatefulWidget {
   final bool dispOnBoardPage;
+
   const MyApp({super.key, required this.dispOnBoardPage});
 
   @override
@@ -77,12 +78,10 @@ class _MyAppState extends State<MyApp> {
                 notifier.darkTheme ? CalsyncThemes.dark : CalsyncThemes.light,
             // theme: CalsyncThemes.light,
             // darkTheme: CalsyncThemes.dark,
-            // themeMode: ThemeMode.system,
+            themeMode: ThemeMode.system,
             home: widget.dispOnBoardPage
                 ? SignInPage(title: 'Calsync')
                 : OnBoarding(),
-            // home: OnBoarding(),
-            // home: SignInPage(title: 'Calsync'),
             onGenerateRoute: (RouteSettings routeParam) {
               // https://youtu.be/-XMexZCMCzU
               // Auto generate routes by using patterns
@@ -125,25 +124,6 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  final List<Widget> aboutBoxChildren = <Widget>[
-    const SizedBox(height: 24),
-    RichText(
-      text: const TextSpan(
-        children: <TextSpan>[
-          TextSpan(
-              // style: textStyle,
-              text: "Flutter is Google's UI toolkit for building beautiful, "
-                  'natively compiled applications for mobile, web, and desktop '
-                  'from a single codebase. Learn more about Flutter at '),
-          TextSpan(
-              // style: textStyle.copyWith(color: theme.colorScheme.primary),
-              text: 'https://flutter.dev'),
-          // TextSpan(style: textStyle, text: '.'),
-        ],
-      ),
-    ),
-  ];
-
   @override
   void initState() {
     super.initState();
@@ -173,10 +153,11 @@ class _SignInPageState extends State<SignInPage> {
     String text = "No one";
     return Consumer<CalsyncGoogleOAuth>(
         builder: (BuildContext context, notifier, child) {
-      if (notifier.currentUser != null) {
-        text = notifier.currentUser?.email as String;
+      if (notifier.getCurrentUser != null) {
+        text = notifier.getCurrentUser?.email as String;
       }
       return Container(
+        color: Theme.of(context).primaryColorDark,
         child: Center(
           /*ADD A TITLE*/
           child: Column(
@@ -189,7 +170,7 @@ class _SignInPageState extends State<SignInPage> {
                     setState(() {
                       // CalsyncGoogleOAuth().signIn();
                       continueToApp = true;
-                      Navigator.pushNamed(context, '/homepage');
+                      Navigator.pushReplacementNamed(context, '/homepage');
                       // CalsyncGoogleOAuth().getCalendars();
                     });
                   }
@@ -205,7 +186,25 @@ class _SignInPageState extends State<SignInPage> {
                 },
                 child: Text("Continue"),
               ),
-              Text("${text} is signed in"), /*FORMAT THIS*/
+              Center(
+                child: Text(
+                  "${text} is signed in",
+                  style: Theme.of(context).textTheme.headline1,
+                ),
+              ),
+              Image.network(
+                notifier.getCurrentUser!.photoUrl!,
+                height: 200,
+                cacheHeight: 200,
+                cacheWidth: 400,
+                filterQuality: FilterQuality.high,
+                fit: BoxFit.contain,
+                semanticLabel: notifier.getCurrentUser!.displayName,
+                width: 200,
+                loadingBuilder: (context, child, progress) {
+                  return progress == null ? child : LinearProgressIndicator();
+                },
+              ),
             ],
           ),
         ),

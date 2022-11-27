@@ -50,8 +50,8 @@ class _EditEventState extends State<EditEvent> {
     return Consumer<CalsyncGoogleOAuth>(
         builder: (BuildContext context, notifier, child) {
       String email = "";
-      if (notifier.currentUser != null) {
-        email = notifier.currentUser?.email as String;
+      if (notifier.getCurrentUser != null) {
+        email = notifier.getCurrentUser?.email as String;
       }
       return Container(
         child: Column(children: [
@@ -68,10 +68,13 @@ class _EditEventState extends State<EditEvent> {
           Text("Select the start time of your event"),
           ListTile(
             title: Text(
+                // DateFormat("EEE., MMM d, yyyy").format(startDay).toString()),
                 "Date: ${startDay.year}, ${startDay.month}, ${startDay.day}"),
             trailing: Icon(Icons.calendar_today),
             onTap: () {
-              _pickStartDate(context);
+              setState(() {
+                _pickStartDate(context);
+              });
             },
           ),
           ListTile(
