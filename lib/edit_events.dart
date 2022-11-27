@@ -35,7 +35,6 @@ class _EditEventState extends State<EditEvent> {
   TimeOfDay startTime = TimeOfDay.now();
   DateTime endDay = DateTime.now();
   TimeOfDay endTime = TimeOfDay.now();
-
   late String source, id;
 
   @override

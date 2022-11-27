@@ -20,39 +20,48 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Consumer<CalsyncGoogleOAuth>(
       builder: (BuildContext context, notifier, child) {
-        return SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // CalsyncAuth(),
-              ElevatedButton(
-                onPressed: () {
-                  dispPage = true;
-                  setState(() {
-                    print("Render Page: $dispPage");
-                  });
-                },
-                child: const Text("Sync"),
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            // CalsyncAuth(),
+            ElevatedButton(
+              onPressed: () {
+                dispPage = true;
+                setState(() {
+                  print("Render Page: $dispPage");
+                });
+              },
+              child: Text(
+                "Sync",
+                style: Theme.of(context).textTheme.headline5,
               ),
-              ElevatedButton(
-                  onPressed: () async {
+            ),
+            ElevatedButton(
+                onPressed: () async {
+                  if (notifier.getCurrentUser != null) {
+                    // if the current user is signed in sign them out and navigate to the sign in page
                     SharedPreferences _prefs =
                         await SharedPreferences.getInstance();
                     _prefs.setBool(
                         "navToHome", false); // Set onboarding to false
-
-                    print(notifier.getCurrentUser);
-                    notifier.handleSignOut(); // sign out user
-                    print(notifier.getCurrentUser);
-                    Navigator.popAndPushNamed(context, '/');
-                  },
-                  child: Text("Signout")),
-              dispPage ? DayPage() : Text("Could not display day page"),
-              Settings(),
-            ],
-          ),
+                    setState(() {
+                      Navigator.popAndPushNamed(context, '/signin');
+                      notifier.handleSignOut(); // sign out user
+                    });
+                  } else {
+                    setState(() {
+                      Navigator.popAndPushNamed(context, '/signin');
+                      // notifier.signIn(); // sign out user
+                    });
+                  }
+                },
+                child: Text(
+                    notifier.getCurrentUser != null ? "Signout" : "Signin",
+                    style: Theme.of(context).textTheme.headline5)),
+            // dispPage ? DayPage() : Text("Could not display day page"),
+            Settings(),
+          ],
         );
       },
     );
