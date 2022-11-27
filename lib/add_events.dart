@@ -132,52 +132,61 @@ class _AddEventState extends State<AddEvent> {
                 //     // return va
                 //   },
                 // ),
-                TextFormField(
-                  controller: startDateController,
-                  enableIMEPersonalizedLearning: true,
-                  enableSuggestions: true,
-                  keyboardType: TextInputType.datetime,
-                  validator: (text) {
-                    if (text!.isEmpty) {
-                      return "Please enter a date";
-                    } else {
-                      return null;
-                    }
-                  },
-                  enableInteractiveSelection: true,
-                  onChanged: (value) {
-                    start_day = DateTime.parse(value);
-                  },
-                  decoration: InputDecoration(
-                    hintText: "Date",
-                    contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        _pickStartDate(context).then((date) {
-                          if (date != null) {
-                            startDateController.text =
-                                DateFormat("EEE., MMM d, yyyy").format(date);
-                            // date.toLocal().toString();
-                            setState(() {
-                              start_day = date;
-                              print(start_day);
-                            });
-                          }
-                        });
-                      },
-                      icon: Icon(Icons.calendar_today),
-                    ),
-                  ),
-                  // onSaved: (value) => setState(() => description = value!),
-                ),
+                // TextFormField(
+                //   controller: startDateController,
+                //   enableIMEPersonalizedLearning: true,
+                //   enableSuggestions: true,
+                //   keyboardType: TextInputType.datetime,
+                //   validator: (text) {
+                //     if (text!.isEmpty) {
+                //       return "Please enter a date";
+                //     } else {
+                //       return null;
+                //     }
+                //   },
+                //   enableInteractiveSelection: true,
+                //   onChanged: (value) {
+                //     start_day = DateTime.parse(value);
+                //   },
+                //   decoration: InputDecoration(
+                //     hintText: "Date",
+                //     contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                //     suffixIcon: IconButton(
+                //       onPressed: () {
+                //         _pickStartDate(context).then((date) {
+                //           if (date != null) {
+                //             startDateController.text =
+                //                 DateFormat("EEE., MMM d, yyyy").format(date);
+                //             // date.toLocal().toString();
+                //             setState(() {
+                //               start_day = date;
+                //               print(start_day);
+                //             });
+                //           }
+                //         });
+                //       },
+                //       icon: Icon(Icons.calendar_today),
+                //     ),
+                //   ),
+                //   // onSaved: (value) => setState(() => description = value!),
+                // ),
                 ListTile(
-                  title: Text(
-                      "Date: ${start_day.year}, ${start_day.month}, ${start_day.day}"),
-                  trailing: Icon(Icons.calendar_today),
-                  onTap: () {
-                    _pickStartDate(context);
-                  },
-                ),
+                    title: Text(
+                        "Date: ${start_day.year}, ${start_day.month}, ${start_day.day}"),
+                    trailing: Icon(Icons.calendar_today),
+                    onTap: () {
+                      _pickStartDate(context).then((date) {
+                        if (date != null) {
+                          startDateController.text =
+                              DateFormat("EEE., MMM d, yyyy").format(date);
+                          // date.toLocal().toString();
+                          setState(() {
+                            start_day = date;
+                            print(start_day);
+                          });
+                        }
+                      });
+                    }),
                 ListTile(
                   title: Text("Time: ${start_time.hour}:${start_time.minute}"),
                   trailing: Icon(Icons.access_time),
@@ -283,9 +292,9 @@ class _AddEventState extends State<AddEvent> {
       DateTime end_day,
       TimeOfDay end_time,
       String email) {
-    DateTime to = DateTime(start_day.year, start_day.month, start_day.day,
+    DateTime from = DateTime(start_day.year, start_day.month, start_day.day,
         start_time.hour, start_time.minute);
-    DateTime from = DateTime(end_day.year, end_day.month, end_day.day,
+    DateTime to = DateTime(end_day.year, end_day.month, end_day.day,
         end_time.hour, end_time.minute);
     // new_event.name = title;
     // new_event.description = discription;

@@ -36,17 +36,23 @@ class _EditEventState extends State<EditEvent> {
   DateTime endDay = DateTime.now();
   TimeOfDay endTime = TimeOfDay.now();
 
+  late String source, id;
+
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     title = widget.name;
     description = widget.description;
-    String id = widget.id;
+    id = widget.id;
     startDay = DateTime(widget.from.year, widget.from.month, widget.from.day);
     endDay = DateTime(widget.to.year, widget.to.month, widget.to.day);
     startTime = TimeOfDay.fromDateTime(widget.from);
     endTime = TimeOfDay.fromDateTime(widget.to);
-    String source = widget.source;
+    source = widget.source;
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Consumer<CalsyncGoogleOAuth>(
         builder: (BuildContext context, notifier, child) {
       String email = "";
@@ -66,17 +72,18 @@ class _EditEventState extends State<EditEvent> {
             initialValue: description,
           ),
           Text("Select the start time of your event"),
+          // StatefulBuilder(builder: (context, internalState) {
+          //   return
           ListTile(
             title: Text(
                 // DateFormat("EEE., MMM d, yyyy").format(startDay).toString()),
                 "Date: ${startDay.year}, ${startDay.month}, ${startDay.day}"),
             trailing: Icon(Icons.calendar_today),
             onTap: () {
-              setState(() {
-                _pickStartDate(context);
-              });
+              _pickStartDate(context);
             },
           ),
+          // }),
           ListTile(
             title: Text("Time: ${startTime.hour}:${startTime.minute}"),
             trailing: Icon(Icons.access_time),
@@ -104,7 +111,7 @@ class _EditEventState extends State<EditEvent> {
                 edit_event(id, title, description, startDay, startTime, endDay,
                     endTime, email, source);
               },
-              child: Text("Create Event")),
+              child: Text("Edit Event")),
         ]),
       );
     });
@@ -166,9 +173,9 @@ class _EditEventState extends State<EditEvent> {
       TimeOfDay endTime,
       String email,
       String source) {
-    DateTime to = DateTime(startDay.year, startDay.month, startDay.day,
+    DateTime from = DateTime(startDay.year, startDay.month, startDay.day,
         startTime.hour, startTime.minute);
-    DateTime from = DateTime(
+    DateTime to = DateTime(
         endDay.year, endDay.month, endDay.day, endTime.hour, endTime.minute);
 
     if (source == "firebase") {
@@ -180,15 +187,6 @@ class _EditEventState extends State<EditEvent> {
           name: title,
           description: description,
           email: email);
-    }
-    if (source == "local") {
-      EventsDatabase.instance.update(Event(
-          id: id,
-          from: from,
-          to: to,
-          name: title,
-          description: description,
-          email: email));
     }
 
     showDialog(
