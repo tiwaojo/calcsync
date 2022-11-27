@@ -39,32 +39,14 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
   ];
   bool modalOpen = false;
 
-  final List<Widget> aboutBoxChildren = <Widget>[
-    const SizedBox(height: 24),
-    RichText(
-      text: const TextSpan(
-        children: <TextSpan>[
-          TextSpan(
-              // style: textStyle,
-              text: "Flutter is Google's UI toolkit for building beautiful, "
-                  'natively compiled applications for mobile, web, and desktop '
-                  'from a single codebase. Learn more about Flutter at '),
-          TextSpan(
-              // style: textStyle.copyWith(color: theme.colorScheme.primary),
-              text: 'https://flutter.dev'),
-          // TextSpan(style: textStyle, text: '.'),
-        ],
-      ),
-    ),
-  ];
-
+  bool popUp = false;
   @override
   Widget build(BuildContext context) {
     return Consumer<CalsyncGoogleOAuth>(
         builder: (BuildContext context, notifier, child) {
       String? email = notifier.getCurrentUser?.email;
-      print(notifier.getCurrentUser?.email);
-      print(notifier.getEvents().toJson().values);
+      // print(notifier.getCurrentUser?.email);
+      // print(notifier.getEvents().toJson().values);
       List<Event>? gCalEvents = notifier.getEvents().items;
       return Scaffold(
         resizeToAvoidBottomInset: true,
@@ -73,7 +55,45 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
           actions: [
             IconButton(
               onPressed: () {
-                // TODO
+                showAboutDialog(
+                  context: context,
+                  applicationIcon: FlutterLogo(),
+                  applicationName: 'Calsync',
+                  applicationVersion: 'v.1.0.0-beta',
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        children: <TextSpan>[
+                          TextSpan(
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2
+                                  ?.copyWith(
+                                      color: Theme.of(context).backgroundColor),
+                              text: "Preet Patel"),
+                          TextSpan(
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2
+                                  ?.copyWith(
+                                      color: Theme.of(context).backgroundColor),
+                              text: "Aaditya Rajput"),
+                          TextSpan(
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2
+                                  ?.copyWith(
+                                      color: Theme.of(context).backgroundColor),
+                              text: "Tiwaloluwa Ojo"),
+                          TextSpan(
+                              // style: textStyle.copyWith(color: theme.colorScheme.primary),
+                              text: 'https://github.com/tiwaojo/calsync'),
+                          // TextSpan(style: textStyle, text: '.'),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
               },
               icon: Icon(Icons.ballot),
             ),
@@ -85,6 +105,7 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
                   if (it != null) {
                     while (it.moveNext()) {
                       final gCalEvent = it.current;
+                      print(gCalEvent);
                       await EventsDatabase.instance.createItem(events.Event(
                           id: gCalEvent.id,
                           from: gCalEvent.start?.dateTime,
@@ -123,16 +144,19 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
                 routeIndex: 1,
                 btnLabel: "Month",
               ),
-              NavItem(
-                  icon: Icons.settings_rounded,
-                  routeIndex: 2,
-                  btnLabel: "Settings"),
+              Padding(
+                padding: const EdgeInsets.only(right: 38.0),
+                child: NavItem(
+                    icon: Icons.settings_rounded,
+                    routeIndex: 2,
+                    btnLabel: "Settings"),
+              ),
             ],
           ),
         ),
         body: routes[currentIndex],
         floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
         floatingActionButton: FloatingActionButton(
           enableFeedback: true,
           onPressed: () {

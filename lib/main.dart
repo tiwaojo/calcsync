@@ -92,9 +92,10 @@ class _MyAppState extends State<MyApp> {
             }
 
             switch (path[1]) {
-              // case 'schedule':
-              //   return MaterialPageRoute(
-              //       builder: (BuildContext context) => SchedulePage());
+              case 'signin':
+                return MaterialPageRoute(
+                    builder: (BuildContext context) =>
+                        SignInPage(title: "Calsync"));
               case 'day':
                 return MaterialPageRoute(
                     builder: (BuildContext context) => DayPage());
@@ -143,52 +144,25 @@ class _SignInPageState extends State<SignInPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    if (notifier.getCurrentUser != null) {
-                      print(
-                          "User email: ${notifier.getCurrentUser?.email as String}");
-                      setState(() {
-                        // CalsyncGoogleOAuth().signIn();
-                        continueToApp = true;
-                        Navigator.pushReplacementNamed(context, '/homepage');
-                        // CalsyncGoogleOAuth().getCalendars();
-                      });
-                    } else {
-                      notifier.signIn();
-                      setState(() async {
-                        if (await notifier.googleSignIn.isSignedIn()) {
-                          Navigator.pushReplacementNamed(context, '/homepage');
-                        }
-                      });
-                    }
-                  },
-                  child: Text("Sign In With Google"),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      Navigator.pushNamed(context, '/homepage');
-                      continueToApp = true;
-                    });
-                  },
-                  child: Text("Continue"),
-                ),
                 Text(
-                  "Welcome \n${_currentUser?.displayName}",
+                  _currentUser != null
+                      ? "Welcome \n ${_currentUser?.displayName}"
+                      : "",
                   style: Theme.of(context).textTheme.headline1,
                 ),
                 Text(
-                  "${_currentUser?.email} is signed in",
-                  style: Theme.of(context).textTheme.headline1,
+                  _currentUser != null
+                      ? "${_currentUser?.email} is signed in"
+                      : "",
+                  style: Theme.of(context).textTheme.headline5,
                 ),
                 Container(
                   child: notifier.getCurrentUser != null
                       ? Image.network(
                           notifier.getCurrentUser?.photoUrl as String,
-                          height: 50,
-                          cacheHeight: 50,
-                          cacheWidth: 40,
+                          height: 100,
+                          cacheHeight: 100,
+                          cacheWidth: 100,
                           filterQuality: FilterQuality.high,
                           fit: BoxFit.contain,
                           semanticLabel: notifier.getCurrentUser!.displayName,
@@ -203,9 +177,9 @@ class _SignInPageState extends State<SignInPage> {
                           "https://thecaninebuddy.com/ezoimgfmt/i0.wp.com/thecaninebuddy.com/wp-content/uploads/2021/08/crying-cat-meme.jpg?resize=1320%2C743&ssl=1&ezimgfmt=ngcb1/notWebP",
                           // crying cat
                           // "https://cdn3.emoji.gg/emojis/8825_cough.png", // coughing cat
-                          height: 50,
-                          cacheHeight: 50,
-                          cacheWidth: 40,
+                          height: 100,
+                          cacheHeight: 100,
+                          // cacheWidth: 40,
                           filterQuality: FilterQuality.high,
                           fit: BoxFit.contain,
                           semanticLabel: "userImage",
@@ -216,6 +190,37 @@ class _SignInPageState extends State<SignInPage> {
                                 : LinearProgressIndicator();
                           },
                         ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    if (notifier.getCurrentUser != null) {
+                      print(
+                          "User email: ${notifier.getCurrentUser?.email as String}");
+                      setState(() {
+                        // CalsyncGoogleOAuth().signIn();
+                        continueToApp = true;
+                        Navigator.popAndPushNamed(context, '/homepage');
+                        // CalsyncGoogleOAuth().getCalendars();
+                      });
+                    } else {
+                      setState(() async {
+                        notifier.signIn();
+                        // if (await notifier.googleSignIn.isSignedIn()) {
+                        Navigator.popAndPushNamed(context, '/homepage');
+                        // }
+                      });
+                    }
+                  },
+                  child: Text("Sign In With Google"),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      Navigator.pushNamed(context, '/homepage');
+                      continueToApp = true;
+                    });
+                  },
+                  child: Text("Continue"),
                 ),
               ],
             ),

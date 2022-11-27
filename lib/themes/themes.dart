@@ -11,7 +11,7 @@ class CalsyncThemes extends ChangeNotifier {
     visualDensity: VisualDensity.adaptivePlatformDensity,
     textTheme: CalsyncThemesText.calsyncTextThemeL,
     inputDecorationTheme: InputDecorationTheme(
-      // fillColor: Color(0xff182231),
+      fillColor: Color(0xff182231),
       contentPadding: const EdgeInsets.only(left: 10),
       focusedBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: Color(0xFFFF0080)),
@@ -36,12 +36,18 @@ class CalsyncThemes extends ChangeNotifier {
     focusColor: const Color(0xFFC8C8C8),
     disabledColor: const Color(0xFF3176c6),
     //233142
-    bottomAppBarTheme: const BottomAppBarTheme(
+    bottomAppBarTheme: BottomAppBarTheme(
       elevation: 20.0,
-      color: Colors.brown,
-      shape: CircularNotchedRectangle(),
+      color: Colors.black,
+      shape: ThemeData.light(useMaterial3: false).bottomAppBarTheme.shape,
     ),
     brightness: Brightness.light,
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+        elevation: 20.0,
+        backgroundColor: Color(0xff182231),
+        enableFeedback: true,
+        highlightElevation: 10.0,
+        hoverElevation: 5.0),
     bottomSheetTheme: BottomSheetThemeData(
       backgroundColor: ThemeData.light(useMaterial3: true).disabledColor,
       shape: const RoundedRectangleBorder(
