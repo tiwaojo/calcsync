@@ -6,106 +6,83 @@ class CalsyncThemesText {
     headline1: GoogleFonts.poppins(
       fontSize: 45,
       letterSpacing: 5,
-      color: Color(0xFFFF3366),
+      color: Color(0xFF000000),
     ),
-    headline2: TextStyle(
-      fontFamily: "Phenomena",
-      color: Color(0xFFFF3366),
+    headline2: GoogleFonts.poppins(
+      color: Color(0xFF000000),
     ),
-    headline3: TextStyle(
-      fontFamily: "Phenomena",
-      color: Color(0xFFFF3366),
+    headline3: GoogleFonts.poppins(
+      color: Color(0xFF000000),
     ),
-    headline4: TextStyle(
-      fontFamily: "Phenomena",
+    headline4: GoogleFonts.poppins(
       decorationStyle: TextDecorationStyle.double,
       decorationThickness: 10,
-      color: Color(0xFFFF3366),
+      color: Color(0xFF000000),
     ),
-    headline5: TextStyle(
-      fontFamily: "Phenomena",
-      color: Color(0xFFFF3366),
+    headline5: GoogleFonts.poppins(
+      color: Color(0xFF000000),
     ),
-    headline6: TextStyle(
-      fontFamily: "Phenomena",
+    headline6: GoogleFonts.poppins(
       fontSize: 20,
-      color: Color(0xFFFF3366),
-      fontWeight: FontWeight.w300,
+      color: Color(0xFF000000),
+      fontWeight: FontWeight.w500,
     ),
-    bodyText1: TextStyle(
-      fontFamily: "Phenomena",
-      color: Color(0xFFFF3366),
+    bodyText1: GoogleFonts.roboto(
+      color: Color(0xFF000000),
     ),
-    bodyText2: TextStyle(
-      fontFamily: "Phenomena",
-      color: Color(0xFFFF3366),
+    bodyText2: GoogleFonts.roboto(
+      color: Color(0xFF000000),
     ),
-    subtitle1: TextStyle(
-      fontFamily: "Phenomena",
+    subtitle1: GoogleFonts.roboto(
       fontSize: 20,
-      color: Color(0xFFFF3366),
+      color: Color(0xFF000000),
     ),
-    subtitle2: TextStyle(
-        fontFamily: "Phenomena",
-        fontSize: 16,
-        color: Color(0XFFC8C8C8).withOpacity(0.5)),
-    caption: TextStyle(
-      fontFamily: "Phenomena",
-      color: Color(0xFFFF3366),
+    subtitle2: GoogleFonts.roboto(
+        fontSize: 16, color: Color(0XFFC8C8C8).withOpacity(0.5)),
+    caption: GoogleFonts.roboto(
+      color: Color(0xFF000000),
     ),
   );
 
   static TextTheme calsyncTextThemeD = TextTheme(
-    headline1: TextStyle(
-      fontFamily: "Phenomena",
+    headline1: GoogleFonts.poppins(
       fontSize: 45,
       letterSpacing: 5,
-      color: Color(0xFFFF3366),
+      color: Color(0xFFFFFFFF),
     ),
-    headline2: TextStyle(
-      fontFamily: "Phenomena",
-      color: Color(0xFFFF3366),
+    headline2: GoogleFonts.poppins(
+      color: Color(0xFFFFFFFF),
     ),
-    headline3: TextStyle(
-      fontFamily: "Phenomena",
-      color: Color(0xFFFF3366),
+    headline3: GoogleFonts.poppins(
+      color: Colors.white,
     ),
-    headline4: TextStyle(
-      fontFamily: "Phenomena",
+    headline4: GoogleFonts.poppins(
       decorationStyle: TextDecorationStyle.double,
       decorationThickness: 10,
-      color: Color(0xFFFF3366),
+      color: Colors.white,
     ),
-    headline5: TextStyle(
-      fontFamily: "Phenomena",
-      color: Color(0xFFFF3366),
+    headline5: GoogleFonts.poppins(
+      color: Colors.white,
     ),
-    headline6: TextStyle(
-      fontFamily: "Phenomena",
+    headline6: GoogleFonts.poppins(
       fontSize: 20,
-      color: Color(0xFFFF3366),
+      color: Colors.white,
       fontWeight: FontWeight.w300,
     ),
-    bodyText1: TextStyle(
-      fontFamily: "Phenomena",
-      color: Color(0xFFFF3366),
+    bodyText1: GoogleFonts.roboto(
+      color: Colors.white,
     ),
-    bodyText2: TextStyle(
-      fontFamily: "Phenomena",
-      color: Color(0xFFFF3366),
+    bodyText2: GoogleFonts.roboto(
+      color: Colors.white,
     ),
-    subtitle1: TextStyle(
-      fontFamily: "Phenomena",
+    subtitle1: GoogleFonts.roboto(
       fontSize: 20,
-      color: Color(0xFFFF3366),
+      color: Colors.white,
     ),
-    subtitle2: TextStyle(
-        fontFamily: "Phenomena",
-        fontSize: 16,
-        color: Color(0XFFC8C8C8).withOpacity(0.5)),
-    caption: TextStyle(
-      fontFamily: "Phenomena",
-      color: Color(0xFFFF3366),
+    subtitle2: GoogleFonts.roboto(
+        fontSize: 16, color: Color(0XFFC8C8C8).withOpacity(0.5)),
+    caption: GoogleFonts.roboto(
+      color: Colors.white,
     ),
   );
 }
