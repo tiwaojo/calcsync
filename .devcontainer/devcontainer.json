@@ -13,7 +13,9 @@
     "--privileged"
   ],
   "extensions": [
-    "dart-code.flutter"
+    "dart-code.flutter",
+    "alexisvt.flutter-snippets",
+    "Dart-Code.flutter"
   ],
   "workspaceMount": "source=${localWorkspaceFolder}/workspace,target=/home/developer/workspace,type=bind,consistency=delegated",
   "workspaceFolder": "/home/developer/workspace"

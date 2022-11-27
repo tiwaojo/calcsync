@@ -25,7 +25,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -44,41 +47,30 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBqp2TwCtIiwP_mtbBLuVjhDxrjtPdtHBU',
-    appId: '1:573300521024:web:c002c63e64811629ed87a5',
-    messagingSenderId: '573300521024',
-    projectId: 'calsync-a53ec',
-    authDomain: 'calsync-a53ec.firebaseapp.com',
-    storageBucket: 'calsync-a53ec.appspot.com',
+    apiKey: 'AIzaSyAuXED5kRug24bPl-VSnOrA1ZOr24dpM0E',
+    appId: '1:209176434525:web:06590a012d584805c07ab4',
+    messagingSenderId: '209176434525',
+    projectId: 'calendar-sync-project-369417',
+    authDomain: 'calendar-sync-project-369417.firebaseapp.com',
+    storageBucket: 'calendar-sync-project-369417.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDV1LbhS8TnarzVOsZIqKxfBCuBxnGZs3U',
-    appId: '1:573300521024:android:1e64ad6cdf49b4feed87a5',
-    messagingSenderId: '573300521024',
-    projectId: 'calsync-a53ec',
-    storageBucket: 'calsync-a53ec.appspot.com',
+    apiKey: 'AIzaSyDYdrEH2Nh_ACSWVEpDzU5Q0ft5llOTgeU',
+    appId: '1:209176434525:android:8352952b9ef438afc07ab4',
+    messagingSenderId: '209176434525',
+    projectId: 'calendar-sync-project-369417',
+    storageBucket: 'calendar-sync-project-369417.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBeqiDkbQyv_syDy2NcfCJWY4Sgc0np8Ss',
-    appId: '1:573300521024:ios:2f746145de585aa5ed87a5',
-    messagingSenderId: '573300521024',
-    projectId: 'calsync-a53ec',
-    storageBucket: 'calsync-a53ec.appspot.com',
-    iosClientId:
-        '573300521024-3sifpu4kisea22spv0ifshajbk2etlfi.apps.googleusercontent.com',
-    iosBundleId: 'com.example.calsync',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBeqiDkbQyv_syDy2NcfCJWY4Sgc0np8Ss',
-    appId: '1:573300521024:ios:2f746145de585aa5ed87a5',
-    messagingSenderId: '573300521024',
-    projectId: 'calsync-a53ec',
-    storageBucket: 'calsync-a53ec.appspot.com',
-    iosClientId:
-        '573300521024-3sifpu4kisea22spv0ifshajbk2etlfi.apps.googleusercontent.com',
-    iosBundleId: 'com.example.calsync',
+    apiKey: 'AIzaSyAllSINaPOvLvaZUTkOArHnIl2dWBqLYXY',
+    appId: '1:209176434525:ios:27fca009295567bdc07ab4',
+    messagingSenderId: '209176434525',
+    projectId: 'calendar-sync-project-369417',
+    storageBucket: 'calendar-sync-project-369417.appspot.com',
+    androidClientId: '209176434525-8eqqripc8q688jsj38k056oathv2g7s5.apps.googleusercontent.com',
+    iosClientId: '209176434525-jvffc44tf0qjocbrbjrmbib4mcdaipf0.apps.googleusercontent.com',
+    iosBundleId: 'com.example.calendarSync',
   );
 }

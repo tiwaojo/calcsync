@@ -1,96 +1,214 @@
+import 'package:calendar_sync/themes/themes.dart';
+import 'package:calendar_sync/views/homepage.dart';
+import 'package:calendar_sync/views/onboarding.dart';
+import 'package:calendar_sync/views/settings_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'firebase_options.dart';
+import 'models/auth.dart';
+
+bool continueToApp = false;
 
 Future<void> main() async {
-  runApp(const MyApp());
-  await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform, name: "Calsync");
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final bool dispOnBoardPage = prefs.getBool('navToHome') ??
+      false; // Get the shared pref to determine if user has gone through onBoarding
+  runApp(MyApp(dispOnBoardPage: dispOnBoardPage));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyApp extends StatefulWidget {
+  final bool dispOnBoardPage;
+
+  const MyApp({super.key, required this.dispOnBoardPage});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    initialization();
+  }
+
+  void initialization() async {
+    // This is where you can initialize the resources needed by your app while
+    // the splash screen is displayed.  Remove the following example because
+    // delaying the user experience is a bad design practice!
+    // ignore_for_file: avoid_print
+    // CalsyncGoogleOAuth().signIn();
+
+    print('ready in 3...');
+    await Future.delayed(const Duration(seconds: 2));
+    print('ready in 2...');
+    await Future.delayed(const Duration(seconds: 2));
+    print('ready in 1...');
+    await Future.delayed(const Duration(seconds: 5));
+    print('go!');
+    FlutterNativeSplash.remove();
+  }
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: const CalSyncHomePage(title: 'Flutter Demo Home Page'),
-    );
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (context) => CalsyncThemeNotification(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => CalsyncGoogleOAuth(),
+          )
+        ],
+        child: Consumer<CalsyncThemeNotification>(builder:
+            (BuildContext context, CalsyncThemeNotification notifier, child) {
+          return MaterialApp(
+            title: 'Calsync',
+            theme:
+                notifier.darkTheme ? CalsyncThemes.dark : CalsyncThemes.light,
+            // theme: CalsyncThemes.light,
+            // darkTheme: CalsyncThemes.dark,
+            themeMode: ThemeMode.system,
+            home: widget.dispOnBoardPage
+                ? SignInPage(title: 'Calsync')
+                : OnBoarding(),
+            onGenerateRoute: (RouteSettings routeParam) {
+              // https://youtu.be/-XMexZCMCzU
+              // Auto generate routes by using patterns
+              final List<String> path = routeParam.name!.split('/');
+              if (path[0] != '') {
+                print("Path: $path");
+                return null;
+              }
+
+              switch (path[1]) {
+                // case 'schedule':
+                //   return MaterialPageRoute(
+                //       builder: (BuildContext context) => SchedulePage());
+                // case 'day':
+                //   return MaterialPageRoute(
+                //       builder: (BuildContext context) => DayPage());
+                case 'homepage':
+                  // final String homePageParams = path[2];
+                  return MaterialPageRoute(
+                      builder: (BuildContext context) => CalSyncHomePage());
+                case 'settings':
+                  return MaterialPageRoute(
+                      builder: (BuildContext context) => SettingsPage());
+                default:
+                  return null;
+              }
+            },
+          );
+        }));
   }
 }
 
-class CalSyncHomePage extends StatefulWidget {
-  const CalSyncHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
+class SignInPage extends StatefulWidget {
+  const SignInPage({super.key, required this.title});
 
   final String title;
 
   @override
-  State<CalSyncHomePage> createState() => _CalSyncHomePageState();
+  State<SignInPage> createState() => _SignInPageState();
 }
 
-class _CalSyncHomePageState extends State<CalSyncHomePage> {
-  int _counter = 0;
+class _SignInPageState extends State<SignInPage> {
+  @override
+  void initState() {
+    super.initState();
+    // initialization();
+    // FlutterNativeSplash.remove();
+  }
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  void initialization() async {
+    // This is where you can initialize the resources needed by your app while
+    // the splash screen is displayed.  Remove the following example because
+    // delaying the user experience is a bad design practice!
+    // ignore_for_file: avoid_print
+    // CalsyncGoogleOAuth().signIn();
+
+    print('ready in 3...');
+    await Future.delayed(const Duration(seconds: 2));
+    print('ready in 2...');
+    await Future.delayed(const Duration(seconds: 2));
+    print('ready in 1...');
+    await Future.delayed(const Duration(seconds: 2));
+    print('go!');
+    FlutterNativeSplash.remove();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+    String text = "No one";
+    return Consumer<CalsyncGoogleOAuth>(
+        builder: (BuildContext context, notifier, child) {
+      if (notifier.getCurrentUser != null) {
+        text = notifier.getCurrentUser?.email as String;
+      }
+      return Container(
+        color: Theme.of(context).primaryColorDark,
+        child: Center(
+          /*ADD A TITLE*/
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  if (notifier.getCurrentUser != null) {
+                    print(notifier.getCurrentUser?.email as String);
+                    setState(() {
+                      // CalsyncGoogleOAuth().signIn();
+                      continueToApp = true;
+                      Navigator.pushReplacementNamed(context, '/homepage');
+                      // CalsyncGoogleOAuth().getCalendars();
+                    });
+                  }
+                },
+                child: Text("Sign In With Google"),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    Navigator.pushNamed(context, '/homepage');
+                    continueToApp = true;
+                  });
+                },
+                child: Text("Continue"),
+              ),
+              Center(
+                child: Text(
+                  "${text} is signed in",
+                  style: Theme.of(context).textTheme.headline1,
+                ),
+              ),
+              Image.network(
+                notifier.getCurrentUser!.photoUrl!,
+                height: 200,
+                cacheHeight: 200,
+                cacheWidth: 400,
+                filterQuality: FilterQuality.high,
+                fit: BoxFit.contain,
+                semanticLabel: notifier.getCurrentUser!.displayName,
+                width: 200,
+                loadingBuilder: (context, child, progress) {
+                  return progress == null ? child : LinearProgressIndicator();
+                },
+              ),
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+      );
+    });
   }
 }

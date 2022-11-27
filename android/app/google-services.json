@@ -1,34 +1,49 @@
 {
   "project_info": {
-    "project_number": "573300521024",
-    "project_id": "calsync-a53ec",
-    "storage_bucket": "calsync-a53ec.appspot.com"
+    "project_number": "209176434525",
+    "project_id": "calendar-sync-project-369417",
+    "storage_bucket": "calendar-sync-project-369417.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:573300521024:android:1e64ad6cdf49b4feed87a5",
+        "mobilesdk_app_id": "1:209176434525:android:8352952b9ef438afc07ab4",
         "android_client_info": {
-          "package_name": "com.example.calsync"
+          "package_name": "com.example.calendar_sync"
         }
       },
       "oauth_client": [
         {
-          "client_id": "573300521024-67g9nr651d4lqmg5aqrne9pj2igdh2bb.apps.googleusercontent.com",
+          "client_id": "209176434525-8eqqripc8q688jsj38k056oathv2g7s5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.calendar_sync",
+            "certificate_hash": "f39a835fe27fbcb4e177a555b55b7dfd47893d4a"
+          }
+        },
+        {
+          "client_id": "209176434525-7c14rp97kdg9r5s5l0q48i9q0u9bieh1.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDV1LbhS8TnarzVOsZIqKxfBCuBxnGZs3U"
+          "current_key": "AIzaSyDYdrEH2Nh_ACSWVEpDzU5Q0ft5llOTgeU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "573300521024-67g9nr651d4lqmg5aqrne9pj2igdh2bb.apps.googleusercontent.com",
+              "client_id": "209176434525-7c14rp97kdg9r5s5l0q48i9q0u9bieh1.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "209176434525-jvffc44tf0qjocbrbjrmbib4mcdaipf0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.calendarSync"
+              }
             }
           ]
         }

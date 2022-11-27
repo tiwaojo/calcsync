@@ -1,4 +1,4 @@
-name: calsync
+name: calendar_sync
 description: SOFE 4640U Mobile Calendar Application
 
 # The following line prevents the package from being accidentally published to
@@ -20,7 +20,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.18.2 <3.0.0'
+  sdk: '>=2.18.4 <3.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -31,23 +31,36 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  googleapis: ^9.2.0
-  google_sign_in: ^5.4.2
-  http: ^0.13.5
 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  google_fonts: ^3.0.1
-  cloud_firestore: ^4.0.4
-  url_launcher: ^6.1.6
+  provider: ^6.0.4
+  shared_preferences: ^2.0.15
+  flutter_native_splash: ^2.2.15
+  extension_google_sign_in_as_googleapis_auth: ^2.0.7
+  firebase_core: ^2.3.0
+  firebase_storage: ^11.0.6
   googleapis_auth: ^1.3.1
-  firebase_storage: ^11.0.5
+  cloud_firestore: ^4.1.0
+  google_fonts: ^3.0.1
+  syncfusion_flutter_calendar: ^20.3.58
+  google_sign_in: ^5.4.2
+  googleapis: ^9.2.0
+  intl: ^0.17.0
+  url_launcher: ^6.1.6
+  ionicons: ^0.2.1
+  material: ^1.0.0+2
+  curved_navigation_bar: ^1.0.3
+  smooth_page_indicator: ^1.0.0+2
+  sqflite: ^2.0.0+3
+  path: ^1.8.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.11.0
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -68,7 +81,10 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
+  assets:
+   - client_secret.json
+   - client_secret-Web.json
+#   - client_secret-IOS.plist
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
