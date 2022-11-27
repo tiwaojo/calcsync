@@ -38,7 +38,7 @@ class _DayPageState extends State<DayPage> {
                       ScrollViewKeyboardDismissBehavior.onDrag,
                   physics: BouncingScrollPhysics(),
                   cacheExtent: 3,
-                  controller: listScrollController,
+                  // controller: listScrollController,
                   itemCount: gCalEvents.length,
                   itemBuilder: (context, index) {
                     // context  is context of position of widget in widget tree
@@ -63,7 +63,9 @@ class _DayPageState extends State<DayPage> {
             ),
           );
         } else {
-          return const SnackBar(content: Text("Could not load gCal Events"));
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Could not load gCal Events")));
+          return Text("Could not load gCal Events");
         }
       },
     );

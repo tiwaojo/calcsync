@@ -1,8 +1,15 @@
 import 'package:calendar_sync/add_events.dart';
+import 'package:calendar_sync/db/sqlite.dart';
+import 'package:calendar_sync/models/event.dart' as events;
 import 'package:calendar_sync/views/month_page.dart';
 import 'package:calendar_sync/views/settings_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:googleapis/calendar/v3.dart';
+import 'package:provider/provider.dart';
+
+import '../models/auth.dart';
+import 'day_page.dart';
 
 int currentIndex = 0;
 
@@ -26,7 +33,7 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
 
   final routes = [
     // SchedulePage(),
-    // DayPage(),
+    DayPage(),
     MonthPage(),
     SettingsPage(),
   ];
@@ -53,88 +60,121 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        title: Text(widget.title),
-        actions: [
-          IconButton(
-            onPressed: () {
-              // TODO
-            },
-            icon: Icon(Icons.ballot),
-          ),
-        ],
-      ),
-      bottomNavigationBar: BottomAppBar(
-        notchMargin: 15.0,
-        elevation: 6,
-        child: Row(
-          //children inside bottom appbar
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            // NavItem(
-            //   icon: Icons.schedule_rounded,
-            //   routeIndex: 0,
-            //   btnLabel: "Schedule",
-            // ),
-            // NavItem(
-            //   icon: Icons.calendar_view_day_rounded,
-            //   routeIndex: 1,
-            //   btnLabel: "Day",
-            // ),
-            NavItem(
-              icon: Icons.calendar_month_rounded,
-              routeIndex: 0,
-              btnLabel: "Month",
+    return Consumer<CalsyncGoogleOAuth>(
+        builder: (BuildContext context, notifier, child) {
+      String? email = notifier.getCurrentUser?.email;
+      print(notifier.getCurrentUser?.email);
+      print(notifier.getEvents().toJson().values);
+      List<Event>? gCalEvents = notifier.getEvents().items;
+      return Scaffold(
+        resizeToAvoidBottomInset: true,
+        appBar: AppBar(
+          title: Text(widget.title),
+          actions: [
+            IconButton(
+              onPressed: () {
+                // TODO
+              },
+              icon: Icon(Icons.ballot),
             ),
-            NavItem(
-                icon: Icons.settings_rounded,
-                routeIndex: 1,
-                btnLabel: "Settings"),
+            IconButton(
+              onPressed: () async {
+                // TODO
+                if (gCalEvents != null) {
+                  var it = gCalEvents.iterator;
+                  if (it != null) {
+                    while (it.moveNext()) {
+                      final gCalEvent = it.current;
+                      await EventsDatabase.instance.createItem(events.Event(
+                          id: gCalEvent.id,
+                          from: gCalEvent.start?.dateTime,
+                          to: gCalEvent.end?.dateTime,
+                          name: gCalEvent.summary.toString(),
+                          description: gCalEvent.description.toString(),
+                          email: notifier.getCurrentUser?.email));
+                    }
+                  }
+                }
+              },
+              icon: Icon(Icons.refresh_rounded),
+            ),
           ],
         ),
-      ),
-      body: routes[currentIndex],
-      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        enableFeedback: true,
-        onPressed: () {
-          if (modalOpen == false) {
-            modalOpen = true;
-            setState(() {
-              showModalBottomSheet(
-                context: context,
-                builder: (context) {
-                  return Padding(
-                    padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom),
-                    child: SingleChildScrollView(
-                      // reverse: true,
-                      child: AddEvent(),
+        bottomNavigationBar: BottomAppBar(
+          notchMargin: 15.0,
+          elevation: 6,
+          child: Row(
+            //children inside bottom appbar
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              // NavItem(
+              //   icon: Icons.schedule_rounded,
+              //   routeIndex: 0,
+              //   btnLabel: "Schedule",
+              // ),
+              NavItem(
+                icon: Icons.calendar_view_day_rounded,
+                routeIndex: 0,
+                btnLabel: "Day",
+              ),
+              NavItem(
+                icon: Icons.calendar_month_rounded,
+                routeIndex: 1,
+                btnLabel: "Month",
+              ),
+              NavItem(
+                  icon: Icons.settings_rounded,
+                  routeIndex: 2,
+                  btnLabel: "Settings"),
+            ],
+          ),
+        ),
+        body: routes[currentIndex],
+        floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: FloatingActionButton(
+          enableFeedback: true,
+          onPressed: () {
+            if (modalOpen == false) {
+              modalOpen = true;
+              setState(() {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return Padding(
+                      padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom),
+                      child: SingleChildScrollView(
+                        // reverse: true,
+                        child: AddEvent(),
+                      ),
+                    );
+                  },
+                  backgroundColor: Theme.of(context).disabledColor,
+                  enableDrag: true,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(25.0),
                     ),
-                  );
-                },
-                backgroundColor: Theme.of(context).disabledColor,
-                enableDrag: true,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(25.0),
                   ),
-                ),
-              );
-              if (modalOpen == true) {
-                modalOpen = false;
-              }
-            });
-          }
-        },
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+                );
+                if (modalOpen == true) {
+                  modalOpen = false;
+                }
+              });
+            }
+          },
+          tooltip: 'Increment',
+          child: const Icon(Icons.add),
+        ), // This trailing comma makes auto-formatting nicer for build methods.
+      );
+      // } else {
+      //   // ScaffoldMessenger.of(context)
+      //   //     .showSnackBar(SnackBar(content: Text("Could not load page")));
+      //   return Text("There was an unexpected error");
+      // }
+    });
   }
 
   Column NavItem({
@@ -148,7 +188,7 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
         IconButton(
           icon: Icon(
             icon,
-            color: Colors.white,
+            color: Theme.of(context).focusColor,
           ),
           onPressed: () {
             setState(() {
@@ -193,7 +233,7 @@ class _NavButtonState extends State<NavButton> {
           child: IconButton(
             icon: Icon(
               widget.icon,
-              color: Colors.white,
+              color: Theme.of(context).focusColor,
             ),
             onPressed: () {
               setState(() {
