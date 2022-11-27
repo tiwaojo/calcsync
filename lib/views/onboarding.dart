@@ -46,15 +46,21 @@ class _OnBoardingState extends State<OnBoarding> {
         ),
       ),
       bottomSheet: onLastPage
-          ? TextButton(
-              onPressed: () async {
-                Navigator.pushNamed(context,
-                    '/homepage'); // navigate to homepage if on last page
-                SharedPreferences _prefs =
-                    await SharedPreferences.getInstance();
-                _prefs.setBool("navToHome", true);
-              },
-              child: Text("Hugh Janus"))
+          ? SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: TextButton(
+                  onPressed: () async {
+                    Navigator.pushNamed(context,
+                        '/signin'); // navigate to homepage if on last page
+                    SharedPreferences _prefs =
+                        await SharedPreferences.getInstance();
+                    _prefs.setBool("navToHome", true);
+                  },
+                  child: Text(
+                    "Continue",
+                    style: Theme.of(context).textTheme.button,
+                  )),
+            )
           : Container(
               padding: EdgeInsets.symmetric(horizontal: 20),
               height: 80,
