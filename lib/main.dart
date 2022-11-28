@@ -176,7 +176,7 @@ class _SignInPageState extends State<SignInPage> {
                           },
                         )
                       : Image.network(
-                          "https://thecaninebuddy.com/ezoimgfmt/i0.wp.com/thecaninebuddy.com/wp-content/uploads/2021/08/crying-cat-meme.jpg?resize=1320%2C743&ssl=1&ezimgfmt=ngcb1/notWebP",
+                          "https://drive.google.com/file/d/1ELiAq5EnOS6ljgykAv5Hj2MYf9adh-B1/view?usp=sharing",
                           // crying cat
                           // "https://cdn3.emoji.gg/emojis/8825_cough.png", // coughing cat
                           height: 100,
