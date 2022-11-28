@@ -168,15 +168,18 @@ class _CalSyncHomePageState extends State<CalSyncHomePage> {
                   builder: (context) {
                     return Padding(
                       padding: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).viewInsets.bottom),
+                          bottom: MediaQuery.of(context).viewInsets.bottom,
+                          top: 10,
+                          left: 10,
+                          right: 10),
                       child: SingleChildScrollView(
                         // reverse: true,
                         child: AddEvent(),
                       ),
                     );
                   },
-                  backgroundColor: Theme.of(context).disabledColor,
                   enableDrag: true,
+                  elevation: 20,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.vertical(
                       top: Radius.circular(25.0),

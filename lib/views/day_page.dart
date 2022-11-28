@@ -49,7 +49,7 @@ class _DayPageState extends State<DayPage> {
                       String subtitle = "N/A";
                       if (gCalEvent.start?.date != null) {
                         subtitle = DateFormat("EEE., MMM d, yyyy")
-                            .format((gCalEvent.start?.date as DateTime))
+                            .format(gCalEvent.start?.date as DateTime)
                             .toString();
                       }
                       String description = gCalEvent.description.toString();

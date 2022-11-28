@@ -36,6 +36,9 @@ class _AddEventState extends State<AddEvent> {
   late TextEditingController titleController;
   late TextEditingController descrptionController;
   late TextEditingController startDateController;
+  late TextEditingController startTimeController;
+  late TextEditingController endDateController;
+  late TextEditingController endTimeController;
 
   @override
   void initState() {
@@ -43,6 +46,9 @@ class _AddEventState extends State<AddEvent> {
     titleController = TextEditingController();
     descrptionController = TextEditingController();
     startDateController = TextEditingController();
+    startTimeController = TextEditingController();
+    endDateController = TextEditingController();
+    endTimeController = TextEditingController();
     // saveEvent();
   }
 
@@ -52,6 +58,9 @@ class _AddEventState extends State<AddEvent> {
     titleController.dispose();
     descrptionController.dispose();
     startDateController.dispose();
+    startTimeController.dispose();
+    endDateController.dispose();
+    endTimeController.dispose();
   }
 
   @override
@@ -66,13 +75,9 @@ class _AddEventState extends State<AddEvent> {
         autovalidateMode: AutovalidateMode.onUserInteraction,
         key: _formKey,
         child: Container(
-          margin: EdgeInsets.only(
-            left: 10,
-            right: 10,
-            top: 20,
-          ),
+          margin: EdgeInsets.only(left: 5, right: 5, top: 20, bottom: 10),
           decoration: BoxDecoration(
-            color: Theme.of(context).backgroundColor,
+            // color: Theme.of(context).backgroundColor,
             borderRadius: BorderRadius.all(
               Radius.circular(20),
             ),
@@ -122,94 +127,224 @@ class _AddEventState extends State<AddEvent> {
                   onSaved: (value) => setState(() => description = value!),
                 ),
                 Text("Select the start time of your event"),
-                // InputDatePickerFormField( // Do not use. Style incompatible...
-                //   firstDate: start_day,
-                //   lastDate: DateTime(start_day.year + 5),
-                //   keyboardType: TextInputType.datetime,
-                //   initialDate: start_day,
-                //   onDateSaved: (value) {
-                //     print(value);
-                //     // return va
-                //   },
-                // ),
-                // TextFormField(
-                //   controller: startDateController,
-                //   enableIMEPersonalizedLearning: true,
-                //   enableSuggestions: true,
-                //   keyboardType: TextInputType.datetime,
-                //   validator: (text) {
-                //     if (text!.isEmpty) {
-                //       return "Please enter a date";
-                //     } else {
-                //       return null;
-                //     }
-                //   },
-                //   enableInteractiveSelection: true,
-                //   onChanged: (value) {
-                //     start_day = DateTime.parse(value);
-                //   },
-                //   decoration: InputDecoration(
-                //     hintText: "Date",
-                //     contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                //     suffixIcon: IconButton(
-                //       onPressed: () {
-                //         _pickStartDate(context).then((date) {
-                //           if (date != null) {
-                //             startDateController.text =
-                //                 DateFormat("EEE., MMM d, yyyy").format(date);
-                //             // date.toLocal().toString();
-                //             setState(() {
-                //               start_day = date;
-                //               print(start_day);
-                //             });
-                //           }
-                //         });
-                //       },
-                //       icon: Icon(Icons.calendar_today),
-                //     ),
-                //   ),
-                //   // onSaved: (value) => setState(() => description = value!),
-                // ),
-                ListTile(
-                    title: Text(
-                        "Date: ${start_day.year}, ${start_day.month}, ${start_day.day}"),
-                    trailing: Icon(Icons.calendar_today),
-                    onTap: () {
-                      _pickStartDate(context).then((date) {
-                        if (date != null) {
-                          startDateController.text =
-                              DateFormat("EEE., MMM d, yyyy").format(date);
-                          // date.toLocal().toString();
-                          setState(() {
-                            start_day = date;
-                            print(start_day);
-                          });
-                        }
-                      });
-                    }),
-                ListTile(
-                  title: Text("Time: ${start_time.hour}:${start_time.minute}"),
-                  trailing: Icon(Icons.access_time),
-                  onTap: () {
-                    _pickStartTime(context);
-                  },
+                // Start Date & Time
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      child: TextFormField(
+                        controller: startDateController,
+                        enableIMEPersonalizedLearning: true,
+                        enableSuggestions: true,
+                        keyboardType: TextInputType.datetime,
+                        validator: (text) {
+                          if (text!.isEmpty) {
+                            return "Please enter a date";
+                          } else {
+                            return null;
+                          }
+                        },
+                        autofocus: false,
+                        enableInteractiveSelection: true,
+                        onChanged: (value) {
+                          start_day = DateTime.parse(value);
+                        },
+                        decoration: InputDecoration(
+                          hintText: "Start Date",
+                          alignLabelWithHint: true,
+                          contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              _pickStartDate(context).then((value) {
+                                if (value != null) {
+                                  startDateController.text =
+                                      DateFormat("EEE., MMM d, yyyy")
+                                          .format(value);
+                                  // date.toLocal().toString();
+                                  setState(() {
+                                    start_day = value;
+                                    print(start_day);
+                                  });
+                                }
+                              });
+                            },
+                            icon: Icon(Icons.calendar_today),
+                          ),
+                        ),
+                        onSaved: (value) => setState(() {
+                          // final date= DateTime.parse(value!);
+                          // start_day =
+                        }),
+                      ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      child: TextFormField(
+                        autofocus: false,
+                        controller: startTimeController,
+                        enableIMEPersonalizedLearning: false,
+                        enableSuggestions: false,
+                        keyboardType: TextInputType.datetime,
+                        validator: (text) {
+                          if (text!.isEmpty) {
+                            return "Please enter a start time";
+                          } else {
+                            return null;
+                          }
+                        },
+                        enableInteractiveSelection: true,
+                        onChanged: (value) {
+                          final tempTime = DateTime.parse(value);
+                          start_time = TimeOfDay.fromDateTime(tempTime);
+                        },
+                        decoration: InputDecoration(
+                          hintText: "Start Time",
+                          contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              _pickStartTime(context).then((value) {
+                                if (value != null) {
+                                  final startTime = DateTime(
+                                      start_day.year,
+                                      start_day.month,
+                                      start_day.day,
+                                      value.hour,
+                                      value.minute);
+                                  startTimeController.text =
+                                      DateFormat("h:mm a").format(startTime);
+                                  setState(() {
+                                    start_time = value;
+                                    print(start_time);
+                                  });
+                                }
+                              });
+                            },
+                            icon: Icon(Icons.access_time),
+                          ),
+                        ),
+                        onSaved: (value) {
+                          // final tempTime = DateTime.parse(value!);
+                          // DateFormat.HOUR_MINUTE;
+                          // print(tempTime);
+                          // setState(() {
+                          //   start_time = TimeOfDay.fromDateTime(tempTime);
+                          // });
+                        },
+                      ),
+                    ),
+                  ],
                 ),
                 Text("Select the end time of your event"),
-                ListTile(
-                  title: Text(
-                      "Date: ${end_day.year}, ${end_day.month}, ${end_day.day}"),
-                  trailing: Icon(Icons.calendar_today),
-                  onTap: () {
-                    _pickEndDate(context);
-                  },
+                // End Date & Time
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      child: TextFormField(
+                          controller: endDateController,
+                          enableIMEPersonalizedLearning: true,
+                          enableSuggestions: true,
+                          keyboardType: TextInputType.datetime,
+                          validator: (text) {
+                            if (text!.isEmpty) {
+                              return "Please enter a date";
+                            } else {
+                              return null;
+                            }
+                          },
+                          autofocus: false,
+                          enableInteractiveSelection: true,
+                          onChanged: (value) {
+                            end_day = DateTime.parse(value);
+                          },
+                          decoration: InputDecoration(
+                            hintText: "End Date",
+                            alignLabelWithHint: true,
+                            contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                _pickStartDate(context).then((date) {
+                                  if (date != null) {
+                                    endDateController.text =
+                                        DateFormat("EEE., MMM d, yyyy")
+                                            .format(date);
+                                    setState(() {
+                                      end_day = date;
+                                      print("End date: $end_day");
+                                    });
+                                  }
+                                });
+                              },
+                              icon: Icon(Icons.calendar_today),
+                            ),
+                          ),
+                          onSaved: (value)
+                              // setState(() => description = value!),
+                              {
+                            print("object");
+                          }),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      child: TextFormField(
+                        autofocus: false,
+                        controller: endTimeController,
+                        enableIMEPersonalizedLearning: false,
+                        enableSuggestions: false,
+                        keyboardType: TextInputType.datetime,
+                        validator: (text) {
+                          if (text!.isEmpty) {
+                            return "Please enter a start time";
+                          } else {
+                            return null;
+                          }
+                        },
+                        enableInteractiveSelection: true,
+                        onChanged: (value) {
+                          final tempTime = DateTime.parse(value);
+                          end_time = TimeOfDay.fromDateTime(tempTime);
+                        },
+                        decoration: InputDecoration(
+                          hintText: "End Time",
+                          contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              _pickEndTime(context).then((value) {
+                                if (value != null) {
+                                  final endTime = DateTime(
+                                      end_day.year,
+                                      end_day.month,
+                                      end_day.day,
+                                      value.hour,
+                                      value.minute);
+                                  endTimeController.text =
+                                      DateFormat("h:mm a").format(endTime);
+                                  setState(() {
+                                    end_time = value;
+                                    print("End time: $end_time");
+                                  });
+                                }
+                              });
+                            },
+                            icon: Icon(Icons.access_time),
+                          ),
+                        ),
+                        onSaved: (value) {
+                          // final tempTime = DateTime.parse(value!);
+                          // print(tempTime);
+                          // setState(() {
+                          //   end_time = TimeOfDay.fromDateTime(tempTime);
+                          // });
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-                ListTile(
-                  title: Text("Time: ${end_time.hour}:${end_time.minute}"),
-                  trailing: Icon(Icons.access_time),
-                  onTap: () {
-                    _pickEndTime(context);
-                  },
-                ),
+
                 ElevatedButton(
                     onPressed: () {
                       bool? isValid = _formKey.currentState
@@ -229,6 +364,14 @@ class _AddEventState extends State<AddEvent> {
                           content: Text('Event Added'),
                           duration: Duration(seconds: 2),
                         ));
+                        setState(() {
+                          titleController.text = "";
+                          descrptionController.text = "";
+                          startDateController.text = "";
+                          startTimeController.text = "";
+                          endDateController.text = "";
+                          endTimeController.text = "";
+                        });
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text('Error: Event Not Added'),
@@ -264,24 +407,18 @@ class _AddEventState extends State<AddEvent> {
     }
   }
 
-  Future<void> _pickStartTime(BuildContext context) async {
-    final TimeOfDay? t =
-        await showTimePicker(context: context, initialTime: start_time);
-    if (t != null) {
-      setState(() {
-        start_time = t;
-      });
-    }
+  Future<TimeOfDay?> _pickStartTime(BuildContext context) async {
+    // final TimeOfDay? t =
+    return await showTimePicker(context: context, initialTime: start_time);
+    // if (t != null) {
+    //   setState(() {
+    //     start_time = t;
+    //   });
+    // }
   }
 
-  Future<void> _pickEndTime(BuildContext context) async {
-    final TimeOfDay? t =
-        await showTimePicker(context: context, initialTime: start_time);
-    if (t != null) {
-      setState(() {
-        end_time = t;
-      });
-    }
+  Future<TimeOfDay?> _pickEndTime(BuildContext context) async {
+    return await showTimePicker(context: context, initialTime: start_time);
   }
 
   void create_event(

@@ -66,6 +66,16 @@ class _MonthViewState extends State<MonthView> {
           return SfCalendar(
             view: CalendarView.month,
             dataSource: EventDataSource(meetings),
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            dragAndDropSettings: DragAndDropSettings(
+              allowNavigation: true,
+              allowScroll: true,
+              autoNavigateDelay: Duration(milliseconds: 700),
+              showTimeIndicator: true,
+            ),
+            appointmentTextStyle:
+                Theme.of(context).textTheme.bodyText2 as TextStyle,
+            showDatePickerButton: true, allowViewNavigation: true,
             allowedViews: const [
               CalendarView.day,
               CalendarView.week,
@@ -210,7 +220,7 @@ class _MonthViewState extends State<MonthView> {
                                 ),
                               );
                             },
-                            backgroundColor: Theme.of(context).backgroundColor,
+                            // backgroundColor: Theme.of(context).backgroundColor,
                             enableDrag: true,
                             isScrollControlled: true,
                             useRootNavigator: true,
