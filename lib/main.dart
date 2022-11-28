@@ -7,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:intl/date_symbol_data_file.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,6 +24,8 @@ Future<void> main() async {
       false; // Get the shared pref to determine if user has gone through onBoarding
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
+  // initializeDateFormatting("en_US", null)
+  //     .then((_) => runApp(MyApp(dispOnBoardPage: dispOnBoardPage)));
   runApp(MyApp(dispOnBoardPage: dispOnBoardPage));
 }
 
@@ -47,14 +50,13 @@ class _MyAppState extends State<MyApp> {
     // the splash screen is displayed.  Remove the following example because
     // delaying the user experience is a bad design practice!
     // ignore_for_file: avoid_print
-    // CalsyncGoogleOAuth().signIn();
 
     print('ready in 3...');
     await Future.delayed(const Duration(seconds: 2));
     print('ready in 2...');
     await Future.delayed(const Duration(seconds: 2));
     print('ready in 1...');
-    await Future.delayed(const Duration(seconds: 5));
+    await Future.delayed(const Duration(seconds: 2));
     print('go!');
     FlutterNativeSplash.remove();
   }

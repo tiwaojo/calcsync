@@ -13,6 +13,7 @@ class CalsyncThemes extends ChangeNotifier {
     inputDecorationTheme: InputDecorationTheme(
       fillColor: Color(0xff182231),
       contentPadding: const EdgeInsets.only(left: 10),
+      hintStyle: ThemeData.light().textTheme.bodySmall,
       focusedBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: Color(0xFFFF0080)),
           borderRadius: BorderRadius.circular(10),
@@ -28,18 +29,18 @@ class CalsyncThemes extends ChangeNotifier {
     ),
     // accentColor: const Color(0xFFFF0080),
     //FF3366),
-    backgroundColor: const Color(0xFF202836),
-    scaffoldBackgroundColor: const Color(0xFF398AE5),
+    backgroundColor: const Color(0xFF324e7b),
+    scaffoldBackgroundColor: const Color(0xFFf8f8f8),
     primaryColor: const Color(0xff398AE5),
-    primaryColorDark: const Color(0xFF41424A),
-    primaryColorLight: const Color(0xFF1C4572),
+    primaryColorLight: const Color(0xFF86a6df),
+    primaryColorDark: const Color(0xFF1C4572),
     focusColor: const Color(0xFFC8C8C8),
     disabledColor: const Color(0xFF3176c6),
     //233142
     bottomAppBarTheme: BottomAppBarTheme(
       elevation: 20.0,
       color: Colors.black,
-      shape: ThemeData.light(useMaterial3: false).bottomAppBarTheme.shape,
+      shape: CircularNotchedRectangle(),
     ),
     brightness: Brightness.light,
     floatingActionButtonTheme: FloatingActionButtonThemeData(
@@ -49,7 +50,7 @@ class CalsyncThemes extends ChangeNotifier {
         highlightElevation: 10.0,
         hoverElevation: 5.0),
     bottomSheetTheme: BottomSheetThemeData(
-      backgroundColor: ThemeData.light(useMaterial3: true).disabledColor,
+      backgroundColor: ThemeData.light().scaffoldBackgroundColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(25.0),
