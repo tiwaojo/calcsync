@@ -175,8 +175,8 @@ class _SignInPageState extends State<SignInPage> {
                                 : LinearProgressIndicator();
                           },
                         )
-                      : Image.network(
-                          "https://drive.google.com/file/d/1ELiAq5EnOS6ljgykAv5Hj2MYf9adh-B1/view?usp=sharing",
+                      : Image.asset(
+                          "assets/images/calsync-image.png",
                           // crying cat
                           // "https://cdn3.emoji.gg/emojis/8825_cough.png", // coughing cat
                           height: 100,
@@ -186,11 +186,11 @@ class _SignInPageState extends State<SignInPage> {
                           fit: BoxFit.contain,
                           semanticLabel: "userImage",
                           width: 200,
-                          loadingBuilder: (context, child, progress) {
-                            return progress == null
-                                ? child
-                                : LinearProgressIndicator();
-                          },
+                          // loadingBuilder: (context, child, progress) {
+                          //   return progress == null
+                          //       ? child
+                          //       : LinearProgressIndicator();
+                          // },
                         ),
                 ),
                 ElevatedButton(
