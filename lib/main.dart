@@ -175,8 +175,8 @@ class _SignInPageState extends State<SignInPage> {
                                 : LinearProgressIndicator();
                           },
                         )
-                      : Image.network(
-                          "https://thecaninebuddy.com/ezoimgfmt/i0.wp.com/thecaninebuddy.com/wp-content/uploads/2021/08/crying-cat-meme.jpg?resize=1320%2C743&ssl=1&ezimgfmt=ngcb1/notWebP",
+                      : Image.asset(
+                          "assets/images/calsync-image.png",
                           // crying cat
                           // "https://cdn3.emoji.gg/emojis/8825_cough.png", // coughing cat
                           height: 100,
@@ -186,11 +186,11 @@ class _SignInPageState extends State<SignInPage> {
                           fit: BoxFit.contain,
                           semanticLabel: "userImage",
                           width: 200,
-                          loadingBuilder: (context, child, progress) {
-                            return progress == null
-                                ? child
-                                : LinearProgressIndicator();
-                          },
+                          // loadingBuilder: (context, child, progress) {
+                          //   return progress == null
+                          //       ? child
+                          //       : LinearProgressIndicator();
+                          // },
                         ),
                 ),
                 ElevatedButton(

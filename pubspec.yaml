@@ -84,6 +84,7 @@ flutter:
   assets:
    - client_secret.json
    - client_secret-Web.json
+   - assets/images/calsync-image.png
 #   - client_secret-IOS.plist
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

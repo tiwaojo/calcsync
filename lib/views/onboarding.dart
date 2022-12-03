@@ -39,9 +39,13 @@ class _OnBoardingState extends State<OnBoarding> {
           controller: controller,
           scrollDirection: Axis.horizontal,
           children: [
-            onBoardPage(label: "Page 1"),
-            onBoardPage(label: "Page 2"),
-            onBoardPage(label: "Page 3"),
+            onBoardPage(label: "Page 1:\nSign in to your google account"),
+            onBoardPage(
+                label:
+                    "Page 2:\n Go to settings and synchronize\ngoogle calendar events with the application "),
+            onBoardPage(
+                label:
+                    "Page 3:\n Create and enjoy the events from \nboth google calendar and this application!"),
           ],
         ),
       ),
