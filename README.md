@@ -2,6 +2,10 @@
 
 SOFE 4640U Mobile Calendar Application
 
+## Report
+
+Navigate [here](https://github.com/tiwaojo/calsync/blob/main/Mobile%20Final%20Report%20Group%2012.pdf) for our detailed report on the following applicaiton
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
